@@ -9,4 +9,22 @@ export const get = async (url, options = {}) =>{
     return response.data;
 }
 
+export const post = async (url, payload) =>{
+    const body = {};
+    Object.keys(payload).forEach((key) => {
+      if (
+        payload[key] ||
+        typeof payload[key] === "boolean" ||
+        typeof payload[key] === "number"
+      ) {
+        body[key] = payload[key];
+      }
+      return {};
+    });
+
+    const response = await request.post(url, body);
+    return response.data;
+}
+
+
 export default request;

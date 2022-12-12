@@ -1,40 +1,114 @@
-import React, { useState } from 'react';
-import { Button, Modal } from 'antd';
+import React from 'react';
+import { Button, Row, Col, Form, Input } from 'antd';
+import * as userServices from '../../api/userServices'
 
-const CreateOrEditUser = () => {
-  const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState('Content of the modal');
-  const showModal = () => {
-    setOpen(true);
-  };
-  const handleOk = () => {
-    setModalText('The modal will be closed after two seconds');
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
-  };
-  const handleCancel = () => {
-    console.log('Clicked cancel button');
-    setOpen(false);
-  };
+
+export default function CreateUser() {
+
+    const onFinish = (values) => {
+      console.log('Success:', values);
+      const fetchApi = async () => {
+        const result = await userServices.createUser(values);
+        console.log(result);
+        // setUserList(result);
+      }
+      fetchApi();
+
+    };
+    const onFinishFailed = (errorInfo) => {
+      console.log('Failed:', errorInfo);
+    };
+
   return (
-    <>
-      <Button type="primary" onClick={showModal}>
-        Open Modal with async logic
+    <Form
+    name="basic"
+    labelCol={{
+      span:  6,
+    }}
+    wrapperCol={{
+      span: 18,
+    }}
+    initialValues={{
+      remember: true,
+    }}
+    onFinish={onFinish}
+    onFinishFailed={onFinishFailed}
+    autoComplete="off"
+  >
+
+    <Row>
+      <Col span={12}>
+      <Form.Item
+      label="Username"
+      name="userName"
+      rules={[
+        {
+          required: true,
+          message: 'Please input your username!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      label="Password"
+      name="password"
+      rules={[
+        {
+          required: true,
+          message: 'Please input your password!',
+        },
+      ]}
+    >
+      <Input.Password />
+    </Form.Item>
+      </Col>
+      <Col span={12}>
+      <Form.Item
+      label="Username"
+      name="userName"
+      rules={[
+        {
+          required: true,
+          message: 'Please input your username!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      label="Password"
+      name="password"
+      rules={[
+        {
+          required: true,
+          message: 'Please input your password!',
+        },
+      ]}
+    >
+      <Input.Password />
+    </Form.Item>
+      </Col>
+    </Row>
+
+   
+
+    
+    <Form.Item
+      wrapperCol={{
+        offset: 12,
+        span: 12,
+      }}
+    >
+      <Button type="primary" htmlType="submit">
+        Submit
       </Button>
-      <Modal
-        title="Title"
-        open={open}
-        onOk={handleOk}
-        confirmLoading={confirmLoading}
-        onCancel={handleCancel}
-      >
-        <p>{modalText}</p>
-      </Modal>
-    </>
-  );
-};
-export default CreateOrEditUser;
+    </Form.Item>
+  </Form>
+  )
+}
+
+
+

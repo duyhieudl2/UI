@@ -3,7 +3,7 @@ import { Table } from 'antd';
 
 import { useEffect, useState } from "react";
 import * as userServices from '../../api/userServices';
-import CreateOrEditUser from './CreateOrEditUser';
+import CreateUser from './CreateOrEditUser';
 import { Button, Modal } from 'antd';
 
 const columns = [
@@ -62,23 +62,32 @@ export default function UserList() {
     // fetchApi();
   }, [])
 
-  const createUser = () => {
-    console.log("OK");
-  }
+  // Create Or Edit 
+  const [open, setOpen] = useState(false);
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
 
   return (
-
-    <div>
-      <button onClick={createUser} className='userListEdit'>Thêm mới</button>
-      <Table
-        columns={columns}
-        dataSource={data}
-        scroll={{
-          x: 1600,
-        }}
-      />
-    </div>
-
-
+    <>
+      <Button type="primary" onClick={showModal}>
+        Thêm mới
+      </Button>
+      <Modal
+        open={open}
+        title="Title"
+        onCancel={handleCancel}
+        footer={[
+        ]}
+        width="1200px"
+      >
+        <CreateUser/>
+        
+      </Modal>
+    </>
   );
 }

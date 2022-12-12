@@ -10,3 +10,12 @@ export const listUser = async () =>{
         console.log(error);
     }
 }
+
+export const createUser = async (values) =>{
+    try{
+        const res = await request.post('/auth/login',values);
+        return res.data;
+    }catch(error){
+        console.log(error);
+    }
+}
