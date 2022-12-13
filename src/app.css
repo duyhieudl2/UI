@@ -6,3 +6,8 @@
     text-decoration: none;
     color: inherit;
 }
+
+.ant-form-item-label{
+    text-align: left !important;
+    padding-left: 10px;
+}
