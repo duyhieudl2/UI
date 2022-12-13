@@ -1,22 +1,20 @@
-import React from 'react';
-import { Button, Row, Col, Form, Input, Select } from 'antd';
-import * as userServices from '../../api/userServices'
-
+import React from "react";
+import { Button, Row, Col, Form, Input, Select, Option } from "antd";
+import * as userServices from "../../api/userServices";
+import { Padding } from "@mui/icons-material";
 
 export default function CreateUser() {
-
   const onFinish = (values) => {
-    console.log('Success:', values);
+    console.log("Success:", values);
     const fetchApi = async () => {
       const result = await userServices.createUser(values);
       console.log(result);
       // setUserList(result);
-    }
+    };
     fetchApi();
-
   };
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -35,7 +33,6 @@ export default function CreateUser() {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-
       <Row>
         <Col span={12}>
           <Form.Item
@@ -44,7 +41,7 @@ export default function CreateUser() {
             rules={[
               {
                 required: true,
-                message: 'Tên đăng nhập không được để trống!',
+                message: "Tên đăng nhập không được để trống!",
               },
             ]}
           >
@@ -57,7 +54,7 @@ export default function CreateUser() {
             rules={[
               {
                 required: true,
-                message: 'Họ và tên không được để trống!',
+                message: "Họ và tên không được để trống!",
               },
             ]}
           >
@@ -70,13 +67,12 @@ export default function CreateUser() {
             rules={[
               {
                 required: true,
-                message: 'Điện thoại không được để trống!',
+                message: "Điện thoại không được để trống!",
               },
             ]}
           >
             <Input />
           </Form.Item>
-
         </Col>
         <Col span={12}>
           <Form.Item
@@ -85,7 +81,7 @@ export default function CreateUser() {
             rules={[
               {
                 required: true,
-                message: 'Mật khẩu không được để trống!',
+                message: "Mật khẩu không được để trống!",
               },
             ]}
           >
@@ -98,7 +94,7 @@ export default function CreateUser() {
             rules={[
               {
                 required: true,
-                message: 'Email không được để trống!',
+                message: "Email không được để trống!",
               },
             ]}
           >
@@ -111,25 +107,23 @@ export default function CreateUser() {
             rules={[
               {
                 required: true,
-                message: 'Chức vụ không được để trống!',
+                message: "Chức vụ không được để trống!",
               },
             ]}
           >
-            <Select
-             labelInValue
-             defaultValue={{
-               value: 'lucy',
-               label: 'Lucy (101)',
-             }}
-            />
+            <Select placeholder="--- Chọn chức vụ ---">
+              <Select.Option value="demo">Demo</Select.Option>
+              <Select.Option value="demo1">Demo1</Select.Option>
+              <Select.Option value="demo2">Demo2</Select.Option>
+            </Select>
           </Form.Item>
         </Col>
       </Row>
 
       <Form.Item
         wrapperCol={{
-          offset: 12,
-          span: 12,
+          offset: 11,
+          span: 11,
         }}
       >
         <Button type="primary" htmlType="submit">
@@ -137,8 +131,5 @@ export default function CreateUser() {
         </Button>
       </Form.Item>
     </Form>
-  )
+  );
 }
-
-
-
