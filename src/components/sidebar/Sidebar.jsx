@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { FileDoneOutlined , SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Link } from "react-router-dom";
 function getItem(label, key, icon, children, type, link) {
@@ -20,8 +20,12 @@ const items = [
 
     getItem('Quản lý vai trò', 'g2'),
   ]),
-  
-  getItem('Group', 'grp', null, [getItem('Option 13', '13'), getItem('Option 14', '14')], 'group'),
+  getItem('Báo cáo', 'sub2', <FileDoneOutlined /> , [
+
+    getItem(<Link to="/bao-cao-chi-tiet-in-out" className="link">Báo cáo chi tiết In/Out</Link>, 'bc1' ),
+
+  ]),
+
 ];
 const Sidebar = () => {
   const onClick = (e) => {

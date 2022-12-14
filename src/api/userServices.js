@@ -1,10 +1,8 @@
 import * as request from '../utils/request';
 
-export const listUser = async () =>{
+export const listUser = async (params) =>{
     try{
-        const res = await request.get('/auth/list-user',{
-            params :{},
-        });
+        const res = await request.get(`/user?${params}`);
         return res.data;
     }catch(error){
         console.log(error);

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Row, Col, Form, Input, Select, Option } from "antd";
 import * as userServices from "../../api/userServices";
+import * as commonServices from "../../api/commonServices";
 import { Padding } from "@mui/icons-material";
 
 export default function CreateUser() {
@@ -15,6 +16,17 @@ export default function CreateUser() {
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const [dataPosition, setPositionList] = useState([]);
+  const listPosition = () => {
+    console.log("Call position api");
+    const fetchApi = async () => {
+      const result = await commonServices.listPosition();
+      console.log("list position: "+result)
+      setPositionList(result)
+    };
+    fetchApi();
   };
 
   return (
@@ -111,7 +123,9 @@ export default function CreateUser() {
               },
             ]}
           >
-            <Select placeholder="--- Chọn chức vụ ---">
+            <Select placeholder="--- Chọn chức vụ ---"
+              onClick={listPosition}
+            >
               <Select.Option value="demo">Demo</Select.Option>
               <Select.Option value="demo1">Demo1</Select.Option>
               <Select.Option value="demo2">Demo2</Select.Option>
