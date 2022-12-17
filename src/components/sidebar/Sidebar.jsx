@@ -1,7 +1,10 @@
-import React from 'react';
-import { FileDoneOutlined , SettingOutlined } from '@ant-design/icons';
-import { Menu } from 'antd';
+import React, { useState } from "react";
+import { FileDoneOutlined, SettingOutlined } from "@ant-design/icons";
+import { Menu } from "antd";
 import { Link } from "react-router-dom";
+import * as commonServices from "../../api/commonServices";
+import { useEffect } from "react";
+
 function getItem(label, key, icon, children, type, link) {
   return {
     key,
@@ -9,27 +12,55 @@ function getItem(label, key, icon, children, type, link) {
     children,
     label,
     type,
-    link
+    link,
   };
 }
-const items = [
-  
-  getItem('Quản trị hệ thống', 'sub1', <SettingOutlined /> , [
 
-    getItem(<Link to="/users" className="link">Quản lý người dùng</Link>, 'g1' ),
+export default function Sidebar() {
+  const [dateMenuBaoCao, setMenuBaoCao] = useState([]);
 
-    getItem('Quản lý vai trò', 'g2'),
-  ]),
-  getItem('Báo cáo', 'sub2', <FileDoneOutlined /> , [
+  useEffect(() => {
+    const fetchApi = async () => {
+      const result = await commonServices.listMenuBaoCao();
+      setMenuBaoCao(result);
+    };
+    fetchApi();
+  }, []);
 
-    getItem(<Link to="/bao-cao-chi-tiet-in-out" className="link">Báo cáo chi tiết In/Out</Link>, 'bc1' ),
+  console.log(dateMenuBaoCao);
 
-  ]),
+  const items = [
+    getItem("Quản trị hệ thống", "sub1", <SettingOutlined />, [
+      getItem(
+        <Link to="/users" className="link">
+          Quản lý người dùng
+        </Link>,
+        "g1"
+      ),
+      getItem(
+        <Link to="/menu-report" className="link">
+          Quản lý trang báo cáo
+        </Link>,
+        "g2"
+      ),
+    ]),
 
-];
-const Sidebar = () => {
+    getItem(
+      "Báo cáo",
+      "sub2",
+      <FileDoneOutlined />,
+      dateMenuBaoCao?.map((array, index) => 
+        getItem(
+          <Link to={array.url} className="link">
+            {array.name}
+          </Link>
+        )
+      )
+    ),
+  ];
+
   const onClick = (e) => {
-    console.log('click ', e);
+    console.log("click ", e);
   };
   return (
     <Menu
@@ -37,11 +68,10 @@ const Sidebar = () => {
       style={{
         width: 256,
       }}
-      defaultSelectedKeys={['1']}
-      defaultOpenKeys={['sub1']}
+      defaultSelectedKeys={["1"]}
+      defaultOpenKeys={["sub1"]}
       mode="inline"
       items={items}
     />
   );
-};
-export default Sidebar;
+}

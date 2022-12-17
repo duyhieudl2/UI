@@ -5,9 +5,6 @@ import { useEffect, useState, useCallback } from "react";
 import * as userServices from "../../api/userServices";
 import CreateUser from "./CreateOrEditUser";
 import { Button, Modal } from "antd";
-import { ListFilter } from "./list-bo-loc";
-import { Container } from "@mui/material";
-import { Padding } from "@mui/icons-material";
 
 const columns = [
   {
@@ -73,14 +70,13 @@ export default function UserList() {
 
   // Handler Search
   const handleSearch = useCallback((values) => {
-    console.log("search value = " + buildQueryString(parseParams(values)));
-    setFilterTaskList(buildQueryString(parseParams(values)));
+    const resultValues = buildQueryString(parseParams(values));
+    setFilterTaskList(resultValues);
   }, []);
 
   return (
     <div>
-      <Container>
-        {/* <div>
+      <div>
         <Button type="primary" onClick={showModal}>
           Thêm mới
         </Button>
@@ -93,16 +89,15 @@ export default function UserList() {
         >
           <CreateUser />
         </Modal>
-      </div> */}
-        <ListFilter handleSearch={handleSearch} />
-        <div>
-          <Table
-            columns={columns}
-            dataSource={data}
-            rowKey={(record) => record.id}
-          />
-        </div>
-      </Container>
+      </div>
+
+      <div>
+        <Table
+          columns={columns}
+          dataSource={data}
+          rowKey={(record) => record.id}
+        />
+      </div>
     </div>
   );
 }
