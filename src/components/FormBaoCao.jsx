@@ -17,12 +17,12 @@ export function FormBaoCao(props) {
   }
   const [toDate, setToDate] = useState(false);
   function onSelectToDate(date, dateString) {
-    console.log(toDate)
+    console.log(toDate);
     setToDate(dateString);
   }
 
   const { handleSearch } = props;
-  console.log(props)
+  console.log(props);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export function FormBaoCao(props) {
           </Form.Item>
         </Col>
         <Col span={24} xl={8}>
-          <Form.Item label="Đến ngày" >
+          <Form.Item label="Đến ngày">
             <DatePicker
               onChange={onSelectToDate}
               format="DD/MM/YYYY"
@@ -114,13 +114,13 @@ export function FormBaoCao(props) {
             </Select>
           </Form.Item>
         </Col>
-        <Col span={24} md={8}>
+
+        <Col span={24} xl={8}>
           <Form.Item label="Phòng ban" name="department">
             <Select
               defaultValue=""
               showSearch
               placeholder="--- Chọn vị trí ---"
-              style={{ width: "100%" }}
               filterOption={(input, option) =>
                 option.props.children
                   .toLowerCase()

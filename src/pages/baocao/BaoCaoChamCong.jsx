@@ -18,10 +18,10 @@ export default function BaoCaoChamCong() {
   }, [filterTaskList]);
 
   const handleSearch = useCallback((values) => {
+    const ddd = moment(values.fromDate).format("DD/MM/YYYY")
+    values.tungayss = "aaaaaaaaaaaaasad";
     const resultValues = buildQueryString(parseParams(values));
-    const ddd = moment(resultValues.fromDate).format("DD/MM/YYYY")
-    console.log("OK: " + resultValues);
-    console.log("OK2: " + ddd);
+    console.log(resultValues)
     setFilterTaskList(resultValues);
   });
 
