@@ -1,13 +1,14 @@
 import React from "react";
 import { Table } from "antd";
-import { buildQueryString, parseParams } from "../../utils/function";
+// import { buildQueryString, parseParams } from "../../utils/function";
+import { buildQueryString, parseParams } from "~/utils/function";
 import { useEffect, useState, useCallback } from "react";
-import * as userServices from "../../api/userServices";
+// import * as userServices from "../../api/userServices";
+import * as userServices from "~/api/userServices";
 import CreateUser from "./CreateOrEditUser";
 import { Button, Modal } from "antd";
 import { ListFilter } from "./list-bo-loc";
 import { Container } from "@mui/material";
-import { Padding } from "@mui/icons-material";
 
 const columns = [
   {
