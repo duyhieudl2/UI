@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FileDoneOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import * as commonServices from '../../api/commonServices';
 import { useEffect } from 'react';
 
@@ -19,6 +19,8 @@ function getItem(label, key, icon, children, type, link) {
 export default function Sidebar(props) {
     const dataMenu = props.dataMenu;
 
+    const naviagete = useNavigate();
+
     const items = dataMenu?.map((array, index) => {
         return getItem(
             array.name,
@@ -35,40 +37,32 @@ export default function Sidebar(props) {
         );
     });
 
-    // getItem('Quản trị hệ thống', 'sub1', <SettingOutlined />, [
-    //     getItem(
-    //         <Link to="/users" className="link">
-    //             Quản lý người dùng
-    //         </Link>,
-    //         'g1',
-    //     ),
-    // ]),
-
-    // getItem(
-    //     'Báo cáo',
-    //     'sub2',
-    //     <FileDoneOutlined />,
-    //     dateMenu?.map((array, index) =>
-    //         getItem(
-    //             <Link to={array.url} className="link">
-    //                 {array.name}
-    //             </Link>,
-    //         ),
-    //     ),
-    // ),
     const onClick = (e) => {
         console.log('click ', e);
     };
+
+    const logoutHanlder = () => {
+        console.log('cleear');
+        localStorage.clear();
+        naviagete('/login');
+    };
     return (
-        <Menu
-            onClick={onClick}
-            style={{
-                width: 256,
-            }}
-            // defaultSelectedKeys={['1']}
-            // defaultOpenKeys={['sub1']}
-            mode="inline"
-            items={items}
-        />
+        <div>
+            <Menu
+                onClick={onClick}
+                style={{
+                    width: 256,
+                }}
+                // defaultSelectedKeys={['1']}
+                // defaultOpenKeys={['sub1']}
+                mode="inline"
+                items={items}
+            />
+            <div style={{ textAlign: 'center', paddingTop: 25 }}>
+                <button onClick={logoutHanlder} style={{ fontWeight: 800, color: 'red', borderColor: '#acabab' }}>
+                    Đăng xuất
+                </button>
+            </div>
+        </div>
     );
 }

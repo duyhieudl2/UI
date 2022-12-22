@@ -7,8 +7,8 @@ import { Container } from '@mui/system';
 import moment from 'moment';
 import './BaoCaoChamCong.css';
 
-export default function BaoCaoChamCong({ link, params, spName }) {
-    console.log(params);
+export default function BaoCaoChamCong({ link, params, spName, reportName }) {
+    console.log('params: ' + params);
     const ref = useRef(null);
 
     const [form] = Form.useForm();
@@ -28,35 +28,27 @@ export default function BaoCaoChamCong({ link, params, spName }) {
     // }, [filterTaskList]);
 
     const handleSearch = useCallback(async (values) => {
-        const sD = moment(new Date(values.fromDate)).format('YYYY-MM-DD');
-        const eD = moment(new Date(values.toDate)).format('YYYY-MM-DD');
+        const sD = moment(new Date(values.FrDate)).format('YYYY-MM-DD');
+        const eD = moment(new Date(values.ToDate)).format('YYYY-MM-DD');
         if (moment(sD).isAfter(eD)) {
             notification.error({ message: 'Đến ngày không được nhỏ hơn từ ngày' });
             return false;
         }
-        values.fromDate = sD;
-        values.toDate = eD;
+        values.FrDate = sD;
+        values.ToDate = eD;
         values.spName = spName;
         const resultValues = buildQueryString(parseParams(values));
         console.log(resultValues);
-        // setFilterTaskList(resultValues);
-        // const fetchApi = async () => {
-        //     const result = await reportServices.chiTietInOut(resultValues);
-        //     console.log('chitiet' + result);
-        // };
-        // fetchApi();
-
         const res = await reportServices.downLoadFile(resultValues);
 
-        console.log('res1111' + res);
-
-        const fileName = 'Ten.xlsx';
+        // console.log(res.headers.get('content-disposition').split('filename=')[1].split(';')[0]);
+        const fileName = res.headers.get('content-disposition').split('filename=')[1].split(';')[0];
         if (res && res.data && res.status === 200) {
-            console.log('res 200' + res);
             const url = window.URL.createObjectURL(new Blob([res.data]));
+            console.log('url' + res);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', fileName ? fileName : 'template.xlsx');
+            link.setAttribute('download', fileName);
             document.body.appendChild(link);
             link.click();
         }
@@ -93,10 +85,10 @@ export default function BaoCaoChamCong({ link, params, spName }) {
                 autoComplete="off"
             >
                 <Row gutter={24}>
-                    {params.includes('fromDate') && (
-                        <Col span={24} xl={8}>
+                    {params.includes('FrDate') && (
+                        <Col span={24} sm={12} xl={8}>
                             <Form.Item
-                                name="fromDate"
+                                name="FrDate"
                                 label="Từ ngày"
                                 rules={[
                                     {
@@ -105,15 +97,15 @@ export default function BaoCaoChamCong({ link, params, spName }) {
                                     },
                                 ]}
                             >
-                                <DatePicker style={{ width: '100%' }}></DatePicker>
+                                <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }}></DatePicker>
                             </Form.Item>
                         </Col>
                     )}
 
-                    {params.includes('toDate') && (
-                        <Col span={24} xl={8}>
+                    {params.includes('ToDate') && (
+                        <Col span={24} sm={12} xl={8}>
                             <Form.Item
-                                name="toDate"
+                                name="ToDate"
                                 label="Đến ngày"
                                 rules={[
                                     {
@@ -122,16 +114,20 @@ export default function BaoCaoChamCong({ link, params, spName }) {
                                     },
                                 ]}
                             >
-                                <DatePicker style={{ width: '100%' }}></DatePicker>
+                                <DatePicker
+                                    placeholder="End"
+                                    format="DD/MM/YYYY"
+                                    style={{ width: '100%' }}
+                                ></DatePicker>
                             </Form.Item>
                         </Col>
                     )}
 
-                    {params.includes('userId') && (
-                        <Col span={24} xl={8}>
+                    {params.includes('EmployId') && (
+                        <Col span={24} sm={12} xl={8}>
                             <Form.Item
                                 label="Mã nhân viên"
-                                name="userId"
+                                name="EmployId"
                                 rules={[
                                     {
                                         required: false,
@@ -143,9 +139,9 @@ export default function BaoCaoChamCong({ link, params, spName }) {
                         </Col>
                     )}
 
-                    {params.includes('position') && (
-                        <Col span={24} xl={8}>
-                            <Form.Item label="Vị trí" name="position">
+                    {params.includes('StoreId') && (
+                        <Col span={24} sm={12} xl={8}>
+                            <Form.Item label="Vị trí" name="StoreId">
                                 <Select
                                     defaultValue=""
                                     showSearch
@@ -169,13 +165,13 @@ export default function BaoCaoChamCong({ link, params, spName }) {
                         </Col>
                     )}
 
-                    {params.includes('department') && (
-                        <Col span={24} xl={8}>
-                            <Form.Item label="Phòng ban" name="department">
+                    {params.includes('DepartmentId') && (
+                        <Col span={24} sm={12} xl={8}>
+                            <Form.Item label="Phòng ban" name="DepartmentId">
                                 <Select
                                     defaultValue=""
                                     showSearch
-                                    placeholder="--- Chọn vị trí ---"
+                                    placeholder="--- Chọn phòng ban ---"
                                     filterOption={(input, option) =>
                                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
                                         option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
