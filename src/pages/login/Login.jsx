@@ -5,16 +5,11 @@ import * as userServices from '~/api/userServices';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import allActions from '~/actions';
-
-const { isAuthenticated, user } = useSelector((state) => state.currentUser);
+import allActions from '~/store/actions';
 
 export default function Login() {
     var token = localStorage.getItem('accessToken');
-
-    useEffect(() => {
-        dispatch(allActions.userActions.setUser(user));
-    }, []);
+    var dispatch = useDispatch();
 
     const naviagete = useNavigate();
     const onFinish = (values) => {
@@ -23,13 +18,7 @@ export default function Login() {
             console.log('dataRS1: ' + result);
             if (result != undefined && result.statusCode === 200) {
                 localStorage.setItem('accessToken', JSON.stringify(result.data));
-
-                console.log('loginBefore' + JSON.stringify(useSelector((state) => state.currentUser)));
-                const user = { accessToken: result.data };
-                const dispatch = useDispatch();
-                dispatch(allActions.userActions.setUser(user));
-
-                console.log('loginAfter' + JSON.stringify(useSelector((state) => state.currentUser)));
+                dispatch(allActions.userActions.setUser(result.data));
                 naviagete('/');
             }
         };

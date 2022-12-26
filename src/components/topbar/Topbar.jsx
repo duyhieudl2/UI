@@ -1,14 +1,16 @@
 import React from 'react';
 import './topbar.css';
-import { SettingOutlined } from '@ant-design/icons';
 import logo from '~/images/logo.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function Topbar() {
+    const navigate = useNavigate();
+
     return (
         <div className="topbar">
             <div className="topbarWrapper">
                 <div className="topLeft">
-                    <span className="logo">
+                    <span className="logo" onClick={() => navigate('/')}>
                         <img src={logo} alt="logo" />
                     </span>
                 </div>

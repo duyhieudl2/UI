@@ -97,7 +97,11 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
                                     },
                                 ]}
                             >
-                                <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }}></DatePicker>
+                                <DatePicker
+                                    placeholder="--- Chọn ngày ---"
+                                    format="DD/MM/YYYY"
+                                    style={{ width: '100%' }}
+                                ></DatePicker>
                             </Form.Item>
                         </Col>
                     )}
@@ -115,7 +119,7 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
                                 ]}
                             >
                                 <DatePicker
-                                    placeholder="End"
+                                    placeholder="--- Chọn ngày ---"
                                     format="DD/MM/YYYY"
                                     style={{ width: '100%' }}
                                 ></DatePicker>
@@ -206,7 +210,7 @@ function getFileName(response) {
     if (disposition && disposition.indexOf('filename') !== -1) {
         const filenameRegex = /UTF-8(.*)/;
         const matches = filenameRegex.exec(disposition);
-        if (matches != null && matches[1]) {
+        if (matches !== null && matches[1]) {
             filename = decodeURIComponent(matches[1].replace(/['"]/g, ''));
         }
     }

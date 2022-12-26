@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import * as commonServices from './api/commonServices';
 import NormalLoginForm from './pages/login/Login';
 import { PrivateRoute } from '~/components/PrivateRoute';
+import { useDispatch, useSelector } from 'react-redux';
 
 function App() {
     const [dataMenu, setMenu] = useState([]);
@@ -17,6 +18,7 @@ function App() {
         const fetchApi = async () => {
             const result = await commonServices.listMenu();
             setMenu(result);
+            console.log('đã gọi: ' + JSON.stringify(result));
         };
         fetchApi();
     }, []);
