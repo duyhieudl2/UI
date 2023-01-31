@@ -1,9 +1,10 @@
 import currentUser from './currentUser';
+import module from './module';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
     currentUser,
-    // counter
+    module,
 });
 
 export default rootReducer;

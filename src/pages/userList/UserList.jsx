@@ -2,6 +2,7 @@ import React from 'react';
 import { Table } from 'antd';
 import { buildQueryString, parseParams, handlePagination } from '~/utils/function';
 import { useEffect, useState, useCallback } from 'react';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import * as userServices from '~/api/userServices';
 import CreateUser from './CreateOrEditUser';
 import { Button, Modal, Pagination } from 'antd';
@@ -48,20 +49,23 @@ const columns = [
 ];
 
 export default function UserList() {
-    const [pageIndex, setPageIndex] = useState(0);
-    const [pageSize, setPageSize] = useState(10);
-
-    const [filterTaskList, setFilterTaskList] = useState([]);
     const [data, setUserList] = useState([]);
+    const location = useLocation();
+    const [filterConditions, setFilterConditions] = useState({
+        pageSize: 10,
+        pageIndex: 1,
+        ...parseParams(location.search),
+    });
+
+    console.log('filter: ' + filterConditions);
 
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await userServices.listUser(filterTaskList);
-            console.log(result);
+            const result = await userServices.listUser(buildQueryString(filterConditions));
             setUserList(result);
         };
         fetchApi();
-    }, [filterTaskList]);
+    }, [filterConditions]);
 
     // // Create Or Edit
     // const [open, setOpen] = useState(false);
@@ -71,27 +75,22 @@ export default function UserList() {
     // const handleCancel = () => {
     //     setOpen(false);
     // };
-
     // Handler Search
-    const [filterConditions, setFilterConditions] = useState({
-        pageIndex: 10,
-        pageSize: 1,
-        // ...parseParams(location.search),
-    });
-    console.log(filterConditions);
 
-    const onChangePagination = (paging, _filters, sorter) => {
+    const onChangePagination = (paging, filters, sorter) => {
+        console.log('change: ' + JSON.stringify(filterConditions));
         handlePagination(paging, sorter, setFilterConditions);
     };
 
     const handleSearch = useCallback((values) => {
         setFilterConditions((oldState) => ({
+            ...filterConditions,
             ...oldState,
             ...values,
         }));
-        console.log('search value = ' + buildQueryString(parseParams(values)));
-        setFilterTaskList(buildQueryString(parseParams(values)));
     }, []);
+
+    console.log('data :' + JSON.stringify(data.paging));
 
     return (
         <div>
@@ -114,13 +113,14 @@ export default function UserList() {
                 <div>
                     <Table
                         columns={columns}
-                        dataSource={data}
+                        dataSource={data.data}
                         rowKey={(record) => record.id}
                         onChange={onChangePagination}
                         pagination={{
-                            defaultPageSize: 5,
+                            defaultPageSize: filterConditions.pageSize,
                             showSizeChanger: true,
-                            pageSizeOptions: ['10', '20', '50', '100'],
+                            total: data.paging ? data.paging.totalCount : 0,
+                            pageSizeOptions: ['5', '10', '20', '50', '100'],
                         }}
                     />
                 </div>

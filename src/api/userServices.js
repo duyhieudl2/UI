@@ -4,7 +4,7 @@ import { notification } from 'antd';
 export const listUser = async (params) => {
     try {
         const res = await request.get(`/user?${params}`);
-        return res.data;
+        return res;
     } catch (error) {
         console.log(error);
     }

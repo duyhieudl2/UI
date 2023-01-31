@@ -8,12 +8,10 @@ import moment from 'moment';
 import './BaoCaoChamCong.css';
 
 export default function BaoCaoChamCong({ link, params, spName, reportName }) {
-    console.log('params: ' + params);
     const ref = useRef(null);
 
     const [form] = Form.useForm();
     useEffect(() => {
-        console.log('reset');
         form.resetFields();
     }, [link]);
 

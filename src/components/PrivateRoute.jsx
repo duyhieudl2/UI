@@ -14,15 +14,15 @@ function PrivateRoute({ children }) {
 
     const [dataMenu, setMenu] = useState([]);
 
-    useEffect(() => {
-        const fetchApi = async () => {
-            const result = await commonServices.listMenu();
-            setMenu(result);
-        };
-        if (accessToken !== null) {
-            fetchApi();
-        }
-    }, []);
+    // useEffect(() => {
+    //     const fetchApi = async () => {
+    //         const result = await commonServices.listMenu();
+    //         setMenu(result);
+    //     };
+    //     if (accessToken !== null) {
+    //         fetchApi();
+    //     }
+    // }, []);
 
     if (accessToken == null || currentUser !== true) {
         return <Navigate to="/login" />;
@@ -31,7 +31,7 @@ function PrivateRoute({ children }) {
         <>
             <Topbar></Topbar>
             <div className="container" style={{ paddingTop: '10px' }}>
-                <Sidebar dataMenu={dataMenu} />
+                <Sidebar />
                 {children}
             </div>
         </>

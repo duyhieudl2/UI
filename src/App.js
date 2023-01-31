@@ -13,18 +13,14 @@ import { PrivateRoute } from '~/components/PrivateRoute';
 import { useDispatch, useSelector } from 'react-redux';
 
 function App() {
-    const [dataMenu, setMenu] = useState([]);
-    useEffect(() => {
-        const fetchApi = async () => {
-            const result = await commonServices.listMenu();
-            setMenu(result);
-            console.log('đã gọi: ' + JSON.stringify(result));
-        };
-        fetchApi();
-    }, []);
-    const menuBaoCao = dataMenu.find((obj) => {
-        return obj.code === 'bccc';
-    });
+    const dataMenu = useSelector((state) => state.module);
+
+    const menuBaoCao =
+        Object.keys(dataMenu).length !== 0
+            ? dataMenu.moduleList.find((obj) => {
+                  return obj.code === 'bccc';
+              })
+            : null;
 
     return (
         <Router>
