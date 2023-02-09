@@ -22,4 +22,6 @@ export const Endpoint = {
     LIST_DIVISION: `${BASE_API_URL}/division`,
     CREATE_DIVISION: `${BASE_API_URL}/division`,
     DELETE_DIVISION: `${BASE_API_URL}/division`,
+
+    CRUD_DEPARTMENT: `${BASE_API_URL}/department`,
 };
