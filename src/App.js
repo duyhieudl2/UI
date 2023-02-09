@@ -2,19 +2,19 @@ import Sidebar from './components/sidebar/Sidebar';
 import Topbar from './components/topbar/Topbar';
 import './app.css';
 import Home from './pages/home/Home';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import UserList from './pages/userList/UserList';
+import Division from './pages/danhmuc/bophan/Division';
 import BaoCaoChamCong from './pages/baocao/BaoCaoChamCong';
-import { useEffect, useState } from 'react';
-import * as commonServices from './api/commonServices';
 import NormalLoginForm from './pages/login/Login';
 import { PrivateRoute } from '~/components/PrivateRoute';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function App() {
     const dataMenu = useSelector((state) => state.module);
 
+    // console.log(Object.keys(dataMenu).length);
     const menuBaoCao =
         Object.keys(dataMenu).length !== 0
             ? dataMenu.moduleList.find((obj) => {
@@ -39,6 +39,14 @@ function App() {
                     element={
                         <PrivateRoute>
                             <UserList />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path="/bo-phan"
+                    element={
+                        <PrivateRoute>
+                            <Division />
                         </PrivateRoute>
                     }
                 ></Route>

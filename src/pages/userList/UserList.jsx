@@ -3,7 +3,8 @@ import { Table } from 'antd';
 import { buildQueryString, parseParams, handlePagination } from '~/utils/function';
 import { useEffect, useState, useCallback } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import * as userServices from '~/api/userServices';
+import { authGetData } from '~/utils/request';
+import { Endpoint } from '~/utils/endpoint';
 import CreateUser from './CreateOrEditUser';
 import { Button, Modal, Pagination } from 'antd';
 import { ListFilter } from './list-bo-loc';
@@ -57,15 +58,29 @@ export default function UserList() {
         ...parseParams(location.search),
     });
 
-    console.log('filter: ' + filterConditions);
+    const getUserList = useCallback(() => {
+        authGetData({
+            url: `${Endpoint.LIST_USERS}?${buildQueryString(filterConditions)}`,
+            onSuccess: (res) => {
+                if (res.statusCode === 200) {
+                    setUserList(res.data);
+                }
+            },
+        });
+    }, [filterConditions]);
 
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await userServices.listUser(buildQueryString(filterConditions));
-            setUserList(result);
-        };
-        fetchApi();
+        authGetData({
+            url: `${Endpoint.LIST_USERS}?${buildQueryString(filterConditions)}`,
+            onSuccess: (res) => {
+                if (res.statusCode === 200) {
+                    setUserList(res.data);
+                }
+            },
+        });
     }, [filterConditions]);
+
+    console.log('userData: ' + JSON.stringify(data));
 
     // // Create Or Edit
     // const [open, setOpen] = useState(false);
@@ -89,8 +104,6 @@ export default function UserList() {
             ...values,
         }));
     }, []);
-
-    console.log('data :' + JSON.stringify(data.paging));
 
     return (
         <div>

@@ -1,8 +1,9 @@
 import { buildQueryString, parseParams } from '../../utils/function';
 import React, { useCallback, useEffect, useState, map, useForm, useRef } from 'react';
 import { Col, Form, Row, Button, DatePicker, Space, Input, Select, notification } from 'antd';
-import * as commonServices from '../../api/commonServices';
 import * as reportServices from '../../api/reportServices';
+import { authGetData } from '~/utils/request';
+import { Endpoint } from '~/utils/endpoint';
 import { Container } from '@mui/system';
 import moment from 'moment';
 import './BaoCaoChamCong.css';
@@ -58,20 +59,32 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
     const [dataPB, setListPhongBan] = useState([]);
 
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await commonServices.listViTriCuaHang();
-            setListViTriCuaHang(result);
-        };
-        fetchApi();
+        authGetData({
+            url: `${Endpoint.LIST_LOCATION_STORE}`,
+            onSuccess: (res) => {
+                if (res.statusCode === 200) {
+                    setListViTriCuaHang(res.data);
+                }
+            },
+        });
+
+        // const fetchApi = async () => {
+        //     const result = await commonServices.listViTriCuaHang();
+        //     setListViTriCuaHang(result);
+        // };
+        // fetchApi();
     }, []);
 
-    useEffect(() => {
-        const fetchApi = async () => {
-            const result = await commonServices.listPhongBan();
-            setListPhongBan(result);
-        };
-        fetchApi();
-    }, []);
+    // useEffect(() => {
+    //     authGetData({
+    //         url: `${Endpoint.LIST_POSITION}`,
+    //         onSuccess: (res) => {
+    //             if (res.statusCode === 200) {
+    //                 setListPhongBan(res.data);
+    //             }
+    //         },
+    //     });
+    // }, []);
     return (
         <Container>
             <Form

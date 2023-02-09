@@ -29,7 +29,7 @@ export default function Login() {
             setLoading,
             onSuccess: (res) => {
                 if (res.statusCode === STATUSCODE_200 && res.data) {
-                    localStorage.setItem('accessToken', JSON.stringify(res.data));
+                    localStorage.setItem('accessToken', res.data);
                     dispatch(allActions.userActions.setUser(res.data));
                     navigate('/');
                 } else {
@@ -37,18 +37,6 @@ export default function Login() {
                 }
             },
         });
-        //
-
-        // const fetchApi = async () => {
-        //     const result = await userServices.login(values);
-        //     console.log('dataRS1: ' + result);
-        //     if (result != undefined && result.statusCode === 200) {
-        //         localStorage.setItem('accessToken', JSON.stringify(result.data));
-        //         dispatch(allActions.userActions.setUser(result.data));
-        //         naviagete('/');
-        //     }
-        // };
-        // fetchApi();
     };
 
     const onFinishFailed = (errorInfo) => {

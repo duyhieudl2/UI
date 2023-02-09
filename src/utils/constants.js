@@ -1,6 +1,6 @@
 export const BASE_API_URL = process.env.REACT_APP_API_URL;
 
-export const TOKEN_NAME = 'ex1-auth-token';
+export const TOKEN_NAME = 'accessToken';
 export const DEBOUNCE_INPUT_SEARCH_DELAY = 1000;
 
 export const WIDTH_LEFT_MENU = 270;

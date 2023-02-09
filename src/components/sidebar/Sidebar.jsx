@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { FileDoneOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu, Tooltip } from 'antd';
 import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import * as commonServices from '../../api/commonServices';
+import { authGetData } from '~/utils/request';
+import { Endpoint } from '~/utils/endpoint';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import allActions from '~/store/actions';
@@ -21,17 +22,21 @@ function getItem(label, key, icon, children, type, link) {
 
 export default function Sidebar() {
     let location = useLocation();
+    const token = localStorage.getItem('accessToken');
 
     const [dataMenu, setDataMenu] = useState([]);
     const dispatch = useDispatch();
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await commonServices.listMenu();
-            setDataMenu(result);
-            dispatch(allActions.moduleActions.setModule(result));
-        };
-        fetchApi();
-    }, []);
+        authGetData({
+            url: `${Endpoint.LIST_MENU}`,
+            onSuccess: (res) => {
+                if (res.statusCode === 200) {
+                    setDataMenu(res.data);
+                    dispatch(allActions.moduleActions.setModule(res.data));
+                }
+            },
+        });
+    }, [token]);
 
     const naviagete = useNavigate();
 
@@ -65,14 +70,14 @@ export default function Sidebar() {
     const [submenu, setSubmenu] = useState([]);
 
     useEffect(() => {
-        console.log(
-            'find: ' +
-                JSON.stringify(
-                    dataMenu.find(
-                        (item) => item.subItems && item.subItems.find((item) => item.url === location.pathname),
-                    ),
-                ),
-        );
+        // console.log(
+        //     'find: ' +
+        //         JSON.stringify(
+        //             dataMenu.find(
+        //                 (item) => item.subItems && item.subItems.find((item) => item.url === location.pathname),
+        //             ),
+        //         ),
+        // );
         if (!dataMenu.find((item) => item.url === location.pathname)) {
             if (
                 dataMenu.find((item) => item.subItems && item.subItems.find((item) => item.url === location.pathname))
