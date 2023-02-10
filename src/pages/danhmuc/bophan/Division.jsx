@@ -11,6 +11,7 @@ import { Endpoint } from '~/utils/endpoint';
 import { Container } from '@mui/material';
 import moment from 'moment';
 import { FORMAT_DATE } from '~/utils/constants';
+import FormBoLoc from './list-bo-loc';
 
 export default function Division() {
     const [open, setOpen] = useState(false);
@@ -34,7 +35,7 @@ export default function Division() {
     const getDivisionList = useCallback(() => {
         const query = buildQueryString(filterConditions);
         authGetData({
-            url: `${Endpoint.LIST_DIVISION}?${query}`,
+            url: `${Endpoint.CRUD_DIVISION}?${query}`,
             setLoading,
             onSuccess: (res) => {
                 if (res.statusCode === STATUSCODE_200) {
@@ -70,7 +71,7 @@ export default function Division() {
 
     const handleDelete = useCallback((id) => {
         authDeleteData({
-            url: `${Endpoint.DELETE_DIVISION}/${id}`,
+            url: `${Endpoint.CRUD_EMPLOYEE}/${id}`,
             setLoading,
             onSuccess: () => {
                 getDivisionList();
@@ -89,6 +90,7 @@ export default function Division() {
     };
 
     const handleSearch = useCallback((values) => {
+        console.log(JSON.stringify(values));
         setFilterConditions((oldState) => ({
             ...filterConditions,
             ...oldState,
@@ -159,9 +161,7 @@ export default function Division() {
     return (
         <Container>
             <div>
-                <Button type="primary" onClick={() => handleOpenModal()}>
-                    Thêm mới
-                </Button>
+                <FormBoLoc handleSearch={handleSearch} handleOpenModal={handleOpenModal} form={form} />
                 <Modal
                     open={open}
                     title={detailDivision.id ? 'Cập nhật bộ phận' : 'Thêm mới'}

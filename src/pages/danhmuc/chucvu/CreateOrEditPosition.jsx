@@ -5,21 +5,21 @@ import { authPostData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
 import { getErrorForm } from '~/utils/function';
 
-export default function CreateDivision(props) {
+export default function CreateOrEditPosition(props) {
     const [form] = Form.useForm();
-    const { getDivisionList, close, detailDivision } = props;
+    const { getPositionList, close, detailPosition } = props;
 
     useEffect(() => {
         form.resetFields();
-        form.setFieldsValue(detailDivision);
-    }, [detailDivision]);
+        form.setFieldsValue(detailPosition);
+    }, [detailPosition]);
 
     const [loading, setLoading] = useState(false);
 
     const onFinish = (values) => {
         console.log(values);
         authPostData({
-            url: `${Endpoint.CRUD_EMPLOYEE}`,
+            url: `${Endpoint.CRUD_POSITION}`,
             method: 'POST',
             setLoading,
             payload: {
@@ -29,7 +29,7 @@ export default function CreateDivision(props) {
                 if (res.statusCode === 200 && res.data) {
                     form.resetFields();
                     close();
-                    getDivisionList();
+                    getPositionList();
                 } else {
                     getErrorForm(res, form);
                 }
@@ -50,7 +50,7 @@ export default function CreateDivision(props) {
                 span: 16,
             }}
             initialValues={{
-                ...detailDivision,
+                ...detailPosition,
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
@@ -59,12 +59,12 @@ export default function CreateDivision(props) {
         >
             <Form.Item name="id" style={{ display: 'none' }}></Form.Item>
             <Form.Item
-                label="Tên bộ phận"
+                label="Tên chức vụ"
                 name="name"
                 rules={[
                     {
                         required: true,
-                        message: 'Tên bộ phận không được để trống!',
+                        message: 'Tên chức vụ không được để trống!',
                     },
                 ]}
             >
@@ -72,16 +72,16 @@ export default function CreateDivision(props) {
             </Form.Item>
 
             <Form.Item
-                label="Mã bộ phận"
+                label="Mã chức vụ"
                 name="code"
                 rules={[
                     {
                         required: true,
-                        message: 'Mã bộ phận không được để trống!',
+                        message: 'Mã chức vụ không được để trống!',
                     },
                 ]}
             >
-                <Input readOnly={detailDivision.id ? true : false} />
+                <Input readOnly={detailPosition.id ? true : false} />
             </Form.Item>
 
             <Form.Item

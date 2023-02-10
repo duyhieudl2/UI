@@ -4,7 +4,7 @@ import { Table, Form, Button, Modal, Tooltip } from 'antd';
 import { buildQueryString, parseParams, handlePagination, removeUndefinedAttribute } from '~/utils/function';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import CreateOrEditDepartment from './CreateOrEditDepartment';
+import CreateOrEditPosition from './CreateOrEditPosition';
 import { STATUSCODE_200 } from '~/utils/constants';
 import { authGetData, authDeleteData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
@@ -15,7 +15,7 @@ import FormBoLoc from './list-bo-loc';
 
 export default function Position() {
     const [open, setOpen] = useState(false);
-    const [detailData, setDetailData] = useState({});
+    const [detailPosition, setDetailPosition] = useState({});
 
     const [loading, setLoading] = useState(false);
     const [, setSearchParams] = useSearchParams();
@@ -32,10 +32,10 @@ export default function Position() {
     });
 
     // Get List Bộ phận
-    const getDepartmentList = useCallback(() => {
+    const getPositionList = useCallback(() => {
         const query = buildQueryString(filterConditions);
         authGetData({
-            url: `${Endpoint.CRUD_DEPARTMENT}?${query}`,
+            url: `${Endpoint.CRUD_POSITION}?${query}`,
             setLoading,
             onSuccess: (res) => {
                 if (res.statusCode === STATUSCODE_200) {
@@ -55,25 +55,26 @@ export default function Position() {
         setSearchParams(removeUndefinedAttribute(filterConditions));
     }, [filterConditions]);
     useEffect(() => {
-        getDepartmentList();
+        getPositionList();
     }, [filterConditions]);
 
     // Edit
     const handleOpenModal = useCallback(
         (row) => {
-            if (row !== undefined) setDetailData(row);
-            else setDetailData({});
+            if (row !== undefined) setDetailPosition(row);
+            else setDetailPosition({});
             setOpen(!open);
+            console.log(detailPosition);
         },
         [open],
     );
 
     const handleDelete = useCallback((id) => {
         authDeleteData({
-            url: `${Endpoint.CRUD_DEPARTMENT}/${id}`,
+            url: `${Endpoint.CRUD_POSITION}/${id}`,
             setLoading,
             onSuccess: () => {
-                getDepartmentList();
+                getPositionList();
             },
         });
     });
@@ -105,37 +106,27 @@ export default function Position() {
             fixed: 'left',
         },
         {
-            title: 'Tên phòng ban',
-            width: '20%',
+            title: 'Tên chức vụ',
+            width: '30%',
             dataIndex: 'name',
             key: 'id',
             fixed: 'left',
         },
         {
-            title: 'Mã phòng ban',
-            width: '10%',
+            title: 'Mã chức vụ',
+            width: '20%',
             dataIndex: 'code',
         },
         {
-            title: 'Bộ phận',
-            width: '20%',
-            dataIndex: 'divisionName',
-        },
-        {
-            title: 'Địa điểm',
-            width: '15%',
-            dataIndex: 'location',
-        },
-        {
             title: 'Ngày tạo',
-            width: '10%',
+            width: '15%',
             dataIndex: 'createdDate',
             fixed: 'center',
             render: (createdDate) => <span>{createdDate ? moment(createdDate).format(FORMAT_DATE) : null}</span>,
         },
         {
             title: 'Ngày cập nhật',
-            width: '10%',
+            width: '15%',
             dataIndex: 'updatedDate',
             fixed: 'center',
             render: (createdDate) => <span>{createdDate ? moment(createdDate).format(FORMAT_DATE) : null}</span>,
@@ -167,15 +158,15 @@ export default function Position() {
             <div>
                 <Modal
                     open={open}
-                    title={detailData.id ? 'Cập nhật phòng ban' : 'Thêm mới'}
+                    title={detailPosition.id ? 'Cập nhật bộ phận' : 'Thêm mới'}
                     onCancel={handleCancel}
                     footer={[]}
                     width="800px"
                 >
-                    <CreateOrEditDepartment
-                        getDepartmentList={getDepartmentList}
+                    <CreateOrEditPosition
+                        getPositionList={getPositionList}
                         close={handleCancel}
-                        detailData={detailData}
+                        detailPosition={detailPosition}
                     />
                 </Modal>
             </div>

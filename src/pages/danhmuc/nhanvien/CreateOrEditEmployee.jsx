@@ -4,22 +4,23 @@ import { width } from '@mui/system';
 import { authPostData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
 import { getErrorForm } from '~/utils/function';
+import Selection from '~/components/Select';
 
-export default function CreateDivision(props) {
+export default function CreateOrEditEmployee(props) {
     const [form] = Form.useForm();
-    const { getDivisionList, close, detailDivision } = props;
+    const { getDepartmentList, close, detailData } = props;
 
     useEffect(() => {
         form.resetFields();
-        form.setFieldsValue(detailDivision);
-    }, [detailDivision]);
+        form.setFieldsValue(detailData);
+    }, [detailData]);
 
     const [loading, setLoading] = useState(false);
 
     const onFinish = (values) => {
-        console.log(values);
+        console.log('dsadsa' + JSON.stringify(values));
         authPostData({
-            url: `${Endpoint.CRUD_EMPLOYEE}`,
+            url: `${Endpoint.CRUD_DEPARTMENT}`,
             method: 'POST',
             setLoading,
             payload: {
@@ -29,7 +30,7 @@ export default function CreateDivision(props) {
                 if (res.statusCode === 200 && res.data) {
                     form.resetFields();
                     close();
-                    getDivisionList();
+                    getDepartmentList();
                 } else {
                     getErrorForm(res, form);
                 }
@@ -50,7 +51,7 @@ export default function CreateDivision(props) {
                 span: 16,
             }}
             initialValues={{
-                ...detailDivision,
+                ...detailData,
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
@@ -58,13 +59,33 @@ export default function CreateDivision(props) {
             form={form}
         >
             <Form.Item name="id" style={{ display: 'none' }}></Form.Item>
+
             <Form.Item
-                label="Tên bộ phận"
+                label="Bộ phận"
+                name="divisionCode"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Bộ phận không được để trống!',
+                    },
+                ]}
+            >
+                <Selection
+                    url={Endpoint.LIST_BOPHAN}
+                    form={form}
+                    formKey="divisionCode"
+                    // setValue={handleChangeUnit}
+                    placeholder="--- Chọn bộ phận ---"
+                />
+            </Form.Item>
+
+            <Form.Item
+                label="Tên phòng ban"
                 name="name"
                 rules={[
                     {
                         required: true,
-                        message: 'Tên bộ phận không được để trống!',
+                        message: 'Tên phòng ban không được để trống!',
                     },
                 ]}
             >
@@ -72,21 +93,25 @@ export default function CreateDivision(props) {
             </Form.Item>
 
             <Form.Item
-                label="Mã bộ phận"
+                label="Mã phòng ban"
                 name="code"
                 rules={[
                     {
                         required: true,
-                        message: 'Mã bộ phận không được để trống!',
+                        message: 'Mã phòng ban không được để trống!',
                     },
                 ]}
             >
-                <Input readOnly={detailDivision.id ? true : false} />
+                <Input readOnly={detailData.id ? true : false} />
+            </Form.Item>
+
+            <Form.Item label="Địa điểm" name="location">
+                <Input />
             </Form.Item>
 
             <Form.Item
                 wrapperCol={{
-                    offset: 8,
+                    offset: 10,
                     span: 16,
                 }}
             >

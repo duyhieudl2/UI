@@ -4,7 +4,7 @@ import { Table, Form, Button, Modal, Tooltip } from 'antd';
 import { buildQueryString, parseParams, handlePagination, removeUndefinedAttribute } from '~/utils/function';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import CreateOrEditDepartment from './CreateOrEditDepartment';
+import CreateOrEditEmployee from './CreateOrEditEmployee';
 import { STATUSCODE_200 } from '~/utils/constants';
 import { authGetData, authDeleteData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
@@ -13,7 +13,7 @@ import moment from 'moment';
 import { FORMAT_DATE } from '~/utils/constants';
 import FormBoLoc from './list-bo-loc';
 
-export default function Position() {
+export default function Employee() {
     const [open, setOpen] = useState(false);
     const [detailData, setDetailData] = useState({});
 
@@ -32,10 +32,10 @@ export default function Position() {
     });
 
     // Get List Bộ phận
-    const getDepartmentList = useCallback(() => {
+    const getEmployeeList = useCallback(() => {
         const query = buildQueryString(filterConditions);
         authGetData({
-            url: `${Endpoint.CRUD_DEPARTMENT}?${query}`,
+            url: `${Endpoint.CRUD_Employee}?${query}`,
             setLoading,
             onSuccess: (res) => {
                 if (res.statusCode === STATUSCODE_200) {
@@ -55,7 +55,7 @@ export default function Position() {
         setSearchParams(removeUndefinedAttribute(filterConditions));
     }, [filterConditions]);
     useEffect(() => {
-        getDepartmentList();
+        getEmployeeList();
     }, [filterConditions]);
 
     // Edit
@@ -70,10 +70,10 @@ export default function Position() {
 
     const handleDelete = useCallback((id) => {
         authDeleteData({
-            url: `${Endpoint.CRUD_DEPARTMENT}/${id}`,
+            url: `${Endpoint.CRUD_Employee}/${id}`,
             setLoading,
             onSuccess: () => {
-                getDepartmentList();
+                getEmployeeList();
             },
         });
     });
@@ -167,13 +167,13 @@ export default function Position() {
             <div>
                 <Modal
                     open={open}
-                    title={detailData.id ? 'Cập nhật phòng ban' : 'Thêm mới'}
+                    title={detailData.id ? 'Cập nhật nhân viên' : 'Thêm mới'}
                     onCancel={handleCancel}
                     footer={[]}
                     width="800px"
                 >
-                    <CreateOrEditDepartment
-                        getDepartmentList={getDepartmentList}
+                    <CreateOrEditEmployee
+                        getEmployeeList={getEmployeeList}
                         close={handleCancel}
                         detailData={detailData}
                     />

@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import UserList from './pages/userList/UserList';
 import Division from './pages/danhmuc/bophan/Division';
 import Department from './pages/danhmuc/phongban/Department';
+import Position from './pages/danhmuc/chucvu/Position';
+import Employee from './pages/danhmuc/nhanvien/Employee';
 import BaoCaoChamCong from './pages/baocao/BaoCaoChamCong';
 import NormalLoginForm from './pages/login/Login';
 import { PrivateRoute } from '~/components/PrivateRoute';
@@ -56,6 +58,22 @@ function App() {
                     element={
                         <PrivateRoute>
                             <Department />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path="/chuc-vu"
+                    element={
+                        <PrivateRoute>
+                            <Position />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path="/nhan-vien"
+                    element={
+                        <PrivateRoute>
+                            <Employee />
                         </PrivateRoute>
                     }
                 ></Route>
