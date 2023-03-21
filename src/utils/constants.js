@@ -1,4 +1,5 @@
-export const BASE_API_URL = process.env.REACT_APP_API_URL;
+export const BASE_API_URL = 'http://172.16.71.134/api';
+// export const BASE_API_URL = 'http://chamcong-api-uat.brgretail.vn/api';
 
 export const TOKEN_NAME = 'accessToken';
 export const DEBOUNCE_INPUT_SEARCH_DELAY = 1000;
@@ -6,7 +7,7 @@ export const DEBOUNCE_INPUT_SEARCH_DELAY = 1000;
 export const WIDTH_LEFT_MENU = 270;
 
 export const DEFAULT_PAGEINDEX = 1;
-export const DEFAULT_PAGESIZE = 20;
+export const DEFAULT_PAGESIZE = 10;
 export const PAGESIZE_5 = 5;
 
 export const FORMAT_DATE = 'DD/MM/YYYY';
@@ -44,3 +45,8 @@ export const NAVIGATE_HETHONG = '/quan-tri-he-thong';
 export const NAVIGATE_TRANGCHU = '/trang-chu';
 export const NAVIGATE_DANGNHAP = '/login';
 export const NAVIGATE_DEFAULT_PAGE = '/default-page';
+
+export const EMPLOYEE_STATUS = [
+    { value: 1, name: 'Hoạt động' },
+    { value: 2, name: 'Nghỉ việc' },
+];

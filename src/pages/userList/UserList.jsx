@@ -8,7 +8,6 @@ import { Endpoint } from '~/utils/endpoint';
 import CreateUser from './CreateOrEditUser';
 import { Button, Modal, Pagination } from 'antd';
 import { ListFilter } from './list-bo-loc';
-import { Container } from '@mui/material';
 
 const columns = [
     {
@@ -107,37 +106,21 @@ export default function UserList() {
 
     return (
         <div>
-            <Container>
-                {/* <div>
-        <Button type="primary" onClick={showModal}>
-          Thêm mới
-        </Button>
-        <Modal
-          open={open}
-          title="Title"
-          onCancel={handleCancel}
-          footer={[]}
-          width="1200px"
-        >
-          <CreateUser />
-        </Modal>
-      </div> */}
-                <ListFilter handleSearch={handleSearch} />
-                <div>
-                    <Table
-                        columns={columns}
-                        dataSource={data.data}
-                        rowKey={(record) => record.id}
-                        onChange={onChangePagination}
-                        pagination={{
-                            defaultPageSize: filterConditions.pageSize,
-                            showSizeChanger: true,
-                            total: data.paging ? data.paging.totalCount : 0,
-                            pageSizeOptions: ['5', '10', '20', '50', '100'],
-                        }}
-                    />
-                </div>
-            </Container>
+            <ListFilter handleSearch={handleSearch} />
+            <div>
+                <Table
+                    columns={columns}
+                    dataSource={data.data}
+                    rowKey={(record) => record.id}
+                    onChange={onChangePagination}
+                    pagination={{
+                        defaultPageSize: filterConditions.pageSize,
+                        showSizeChanger: true,
+                        total: data.paging ? data.paging.totalCount : 0,
+                        pageSizeOptions: ['5', '10', '20', '50', '100'],
+                    }}
+                />
+            </div>
         </div>
     );
 }

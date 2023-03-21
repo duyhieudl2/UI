@@ -217,6 +217,7 @@ function checkDefaultFilteredValueColumn(filters, columnKey) {
 }
 
 export function handlePagination(paging, sorter, setFilterConditions) {
+    console.log('paging: ' + JSON.stringify(paging));
     let sortKey = 'orderBy';
     let currentKey = 'orderByDesc';
     if (sorter.order === 'descend') {

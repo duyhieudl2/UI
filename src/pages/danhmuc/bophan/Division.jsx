@@ -1,14 +1,13 @@
 import React from 'react';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Table, Form, Button, Modal, Tooltip } from 'antd';
+import { Table, Form, Spin, Modal, Tooltip } from 'antd';
 import { buildQueryString, parseParams, handlePagination, removeUndefinedAttribute } from '~/utils/function';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import CreateDivision from './CreateDivision';
-import { STATUSCODE_200 } from '~/utils/constants';
+import { DEFAULT_PAGEINDEX, DEFAULT_PAGESIZE, STATUSCODE_200 } from '~/utils/constants';
 import { authGetData, authDeleteData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
-import { Container } from '@mui/material';
 import moment from 'moment';
 import { FORMAT_DATE } from '~/utils/constants';
 import FormBoLoc from './list-bo-loc';
@@ -26,8 +25,8 @@ export default function Division() {
     const [form] = Form.useForm();
 
     const [filterConditions, setFilterConditions] = useState({
-        pageSize: 20,
-        pageIndex: 1,
+        pageSize: DEFAULT_PAGESIZE,
+        pageIndex: DEFAULT_PAGEINDEX,
         ...parseParams(location.search),
     });
 
@@ -71,7 +70,7 @@ export default function Division() {
 
     const handleDelete = useCallback((id) => {
         authDeleteData({
-            url: `${Endpoint.CRUD_EMPLOYEE}/${id}`,
+            url: `${Endpoint.CRUD_DIVISION}/${id}`,
             setLoading,
             onSuccess: () => {
                 getDivisionList();
@@ -92,9 +91,10 @@ export default function Division() {
     const handleSearch = useCallback((values) => {
         console.log(JSON.stringify(values));
         setFilterConditions((oldState) => ({
-            ...filterConditions,
             ...oldState,
             ...values,
+            pageIndex: DEFAULT_PAGEINDEX,
+            pageSize: DEFAULT_PAGESIZE,
         }));
     }, []);
 
@@ -149,48 +149,51 @@ export default function Division() {
                         </Tooltip>
                     </a>
 
-                    <a className="delete-icons">
+                    {/* <a className="delete-icons">
                         <Tooltip title="Xóa">
                             <DeleteOutlined onClick={() => handleDelete(row.id)} />
                         </Tooltip>
-                    </a>
+                    </a> */}
                 </div>
             ),
         },
     ];
     return (
-        <Container>
-            <div>
-                <FormBoLoc handleSearch={handleSearch} handleOpenModal={handleOpenModal} form={form} />
-                <Modal
-                    open={open}
-                    title={detailDivision.id ? 'Cập nhật bộ phận' : 'Thêm mới'}
-                    onCancel={handleCancel}
-                    footer={[]}
-                    width="800px"
-                >
-                    <CreateDivision
-                        getDivisionList={getDivisionList}
-                        close={handleCancel}
-                        detailDivision={detailDivision}
+        <>
+            <Spin spinning={loading}>
+                <div>
+                    <FormBoLoc handleSearch={handleSearch} handleOpenModal={handleOpenModal} form={form} />
+                    <Modal
+                        open={open}
+                        title={detailDivision.id ? 'Cập nhật bộ phận' : 'Thêm mới'}
+                        onCancel={handleCancel}
+                        footer={[]}
+                        width="800px"
+                    >
+                        <CreateDivision
+                            getDivisionList={getDivisionList}
+                            close={handleCancel}
+                            detailDivision={detailDivision}
+                        />
+                    </Modal>
+                </div>
+                {/* <ListFilter handleSearch={handleSearch} /> */}
+                <div>
+                    <Table
+                        columns={columns}
+                        dataSource={data}
+                        rowKey={(record) => record.id}
+                        onChange={onChangePagination}
+                        pagination={{
+                            current: filterConditions.pageIndex,
+                            defaultPageSize: filterConditions.pageSize,
+                            showSizeChanger: true,
+                            total: total ? total : 0,
+                            pageSizeOptions: ['5', '10', '20', '50', '100'],
+                        }}
                     />
-                </Modal>
-            </div>
-            {/* <ListFilter handleSearch={handleSearch} /> */}
-            <div>
-                <Table
-                    columns={columns}
-                    dataSource={data}
-                    rowKey={(record) => record.id}
-                    onChange={onChangePagination}
-                    pagination={{
-                        defaultPageSize: filterConditions.pageSize,
-                        showSizeChanger: true,
-                        total: total ? total : 0,
-                        pageSizeOptions: ['5', '10', '20', '50', '100'],
-                    }}
-                />
-            </div>
-        </Container>
+                </div>
+            </Spin>
+        </>
     );
 }

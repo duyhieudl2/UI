@@ -1,3 +1,4 @@
+import { style } from '@mui/system';
 import { Button, Col, Form, Input, Row, Tooltip, Select } from 'antd';
 import Selection from '~/components/Select';
 import { Endpoint } from '~/utils/endpoint';
@@ -13,9 +14,10 @@ export default function FormBoLoc(props) {
             onFinish={handleSearch}
             layout="vertical"
             autoComplete="off"
+            style={{ margin: 0 }}
         >
-            <Row gutter={24} justify="space-between" align="middle">
-                <Col span={24} sm={12}>
+            <Row gutter={24} justify="space-between" align="middle" style={{}}>
+                <Col span={24} sm={12} xl={8}>
                     <Form.Item
                         label="Tên bộ phận"
                         name="DivisionName"
@@ -29,7 +31,7 @@ export default function FormBoLoc(props) {
                     </Form.Item>
                 </Col>
 
-                <Col span={24} sm={12}>
+                <Col span={24} sm={12} xl={8}>
                     <Form.Item
                         label="Mã bộ phận"
                         name="DivisionCode"
@@ -43,7 +45,7 @@ export default function FormBoLoc(props) {
                     </Form.Item>
                 </Col>
 
-                <Col span={24} sm={24} xl={24} style={{ textAlign: 'right', marginBottom: '10px' }}>
+                <Col span={24} sm={12} xl={8} style={{ textAlign: 'right' }}>
                     <Button type="primary" htmlType="submit" style={{ marginRight: '15px' }} form="filter-form">
                         Tìm kiếm
                     </Button>

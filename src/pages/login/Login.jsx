@@ -46,13 +46,13 @@ export default function Login() {
     return token != null && token != undefined ? (
         <Navigate to="/" />
     ) : (
-        <Spin spinning={loading}>
-            <div className="login-page">
+        <div className="login-page">
+            <Spin spinning={loading}>
                 <div className="login-box">
                     <div className="illustration-wrapper">
                         <img src={companyLogo} alt="Login" />
                     </div>
-                    <FormComponent
+                    <Form
                         form={form}
                         layout="vertical"
                         autoComplete="off"
@@ -65,7 +65,10 @@ export default function Login() {
                             Đăng nhập
                         </p>
                         <p></p>
-                        <Form.Item name="userName" rules={[{ required: true, message: 'Vui lòng nhập username!' }]}>
+                        <Form.Item
+                            name="userName"
+                            // rules={[{ required: true, message: 'Vui lòng nhập username!' }]}
+                        >
                             <Input
                                 placeholder="Username"
                                 style={{
@@ -74,7 +77,10 @@ export default function Login() {
                             />
                         </Form.Item>
 
-                        <Form.Item name="password" rules={[{ required: true, message: 'Vui lòng nhập password!' }]}>
+                        <Form.Item
+                            name="password"
+                            // rules={[{ required: true, message: 'Vui lòng nhập password!' }]}
+                        >
                             <Input.Password placeholder="Password" />
                         </Form.Item>
 
@@ -84,9 +90,9 @@ export default function Login() {
                                 LOGIN
                             </Button>
                         </Form.Item>
-                    </FormComponent>
+                    </Form>
                 </div>
-            </div>
-        </Spin>
+            </Spin>
+        </div>
     );
 }

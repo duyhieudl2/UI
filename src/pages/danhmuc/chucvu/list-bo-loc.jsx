@@ -15,7 +15,7 @@ export default function FormBoLoc(props) {
             autoComplete="off"
         >
             <Row gutter={24} justify="space-between" align="middle">
-                <Col span={24} sm={12} xl={12}>
+                <Col span={24} sm={12} xl={8}>
                     <Form.Item
                         label="Tên chức vụ"
                         name="PositionName"
@@ -29,7 +29,7 @@ export default function FormBoLoc(props) {
                     </Form.Item>
                 </Col>
 
-                <Col span={24} sm={12} xl={12}>
+                <Col span={24} sm={12} xl={8}>
                     <Form.Item
                         label="Mã chức vụ"
                         name="PositionCode"
@@ -43,7 +43,7 @@ export default function FormBoLoc(props) {
                     </Form.Item>
                 </Col>
 
-                <Col span={24} sm={24} xl={24} style={{ textAlign: 'right', marginBottom: '10px' }}>
+                <Col span={24} sm={12} xl={8} style={{ textAlign: 'right' }}>
                     <Button type="primary" htmlType="submit" style={{ marginRight: '15px' }} form="filter-form">
                         Tìm kiếm
                     </Button>

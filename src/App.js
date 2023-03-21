@@ -7,8 +7,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import UserList from './pages/userList/UserList';
 import Division from './pages/danhmuc/bophan/Division';
 import Department from './pages/danhmuc/phongban/Department';
+import Shift from './pages/danhmuc/calamviec/Shift';
+import Section from './pages/danhmuc/section/Section';
 import Position from './pages/danhmuc/chucvu/Position';
 import Employee from './pages/danhmuc/nhanvien/Employee';
+import Supplier from './pages/nhacungcap/supplier/Supplier';
+import AccountSupplier from './pages/nhacungcap/account/AccountSupplier';
 import BaoCaoChamCong from './pages/baocao/BaoCaoChamCong';
 import NormalLoginForm from './pages/login/Login';
 import { PrivateRoute } from '~/components/PrivateRoute';
@@ -74,6 +78,38 @@ function App() {
                     element={
                         <PrivateRoute>
                             <Employee />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path="/ca-lam-viec"
+                    element={
+                        <PrivateRoute>
+                            <Shift />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path="/section"
+                    element={
+                        <PrivateRoute>
+                            <Section />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path="/nha-cung-cap"
+                    element={
+                        <PrivateRoute>
+                            <Supplier />
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path="/tai-khoan-nha-cung-cap"
+                    element={
+                        <PrivateRoute>
+                            <AccountSupplier />
                         </PrivateRoute>
                     }
                 ></Route>

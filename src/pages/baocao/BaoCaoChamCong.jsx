@@ -1,55 +1,68 @@
 import { buildQueryString, parseParams } from '../../utils/function';
 import React, { useCallback, useEffect, useState, map, useForm, useRef } from 'react';
-import { Col, Form, Row, Button, DatePicker, Space, Input, Select, notification } from 'antd';
+import { Col, Form, Row, Button, DatePicker, Option, Input, Select, notification, Spin } from 'antd';
 import * as reportServices from '../../api/reportServices';
 import { authGetData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
-import { Container } from '@mui/system';
+import Selection from '~/components/Select';
 import moment from 'moment';
 import './BaoCaoChamCong.css';
 
 export default function BaoCaoChamCong({ link, params, spName, reportName }) {
     const ref = useRef(null);
+    const [loading, setLoading] = useState(false);
 
     const [form] = Form.useForm();
     useEffect(() => {
         form.resetFields();
     }, [link]);
 
-    // const [filterTaskList, setFilterTaskList] = useState(false);
-
-    // useEffect(() => {
-    //     const fetchApi = async () => {
-    //         const result = await reportServices.chiTietInOut(filterTaskList);
-    //         console.log('chitiet' + result);
-    //     };
-    //     fetchApi();
-    // }, [filterTaskList]);
-
     const handleSearch = useCallback(async (values) => {
-        const sD = moment(new Date(values.FrDate)).format('YYYY-MM-DD');
-        const eD = moment(new Date(values.ToDate)).format('YYYY-MM-DD');
-        if (moment(sD).isAfter(eD)) {
-            notification.error({ message: 'Đến ngày không được nhỏ hơn từ ngày' });
-            return false;
-        }
-        values.FrDate = sD;
-        values.ToDate = eD;
-        values.spName = spName;
-        const resultValues = buildQueryString(parseParams(values));
-        console.log(resultValues);
-        const res = await reportServices.downLoadFile(resultValues);
+        console.log('values : ' + values.month);
+        if (values.month === undefined) {
+            const sD = moment(new Date(values.FrDate)).format('YYYY-MM-DD');
+            const eD = moment(new Date(values.ToDate)).format('YYYY-MM-DD');
+            if (moment(sD).isAfter(eD)) {
+                notification.error({ message: 'Đến ngày không được nhỏ hơn từ ngày' });
+                return false;
+            }
+            values.FrDate = sD;
+            values.ToDate = eD;
+            values.spName = spName;
+            const resultValues = buildQueryString(parseParams(values));
+            console.log(resultValues);
+            const res = await reportServices.downLoadFile(resultValues, setLoading);
 
-        // console.log(res.headers.get('content-disposition').split('filename=')[1].split(';')[0]);
-        const fileName = res.headers.get('content-disposition').split('filename=')[1].split(';')[0];
-        if (res && res.data && res.status === 200) {
-            const url = window.URL.createObjectURL(new Blob([res.data]));
-            console.log('url' + res);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
+            // console.log(res.headers.get('content-disposition').split('filename=')[1].split(';')[0]);
+            const fileName = res.headers.get('content-disposition').split('filename=')[1].split(';')[0];
+            if (res && res.data && res.status === 200) {
+                const url = window.URL.createObjectURL(new Blob([res.data]));
+                console.log('url' + res);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `BC${sD}-${eD}.xlsx`);
+                document.body.appendChild(link);
+                link.click();
+            }
+        } else {
+            values.spName = spName;
+            const resultValues = buildQueryString(parseParams(values));
+            console.log(resultValues);
+            const res = await reportServices.downLoadFile(resultValues, setLoading);
+
+            console.log(res.headers.get('content-disposition'));
+            const fileName = res.headers.get('content-disposition').split('filename=')[1].split(';')[0];
+            if (res && res.data && res.status === 200) {
+                const url = window.URL.createObjectURL(new Blob([res.data]));
+                console.log('url' + res);
+                const link = document.createElement('a');
+                link.href = url;
+                const nameFile = fileName.replaceAll('/', '_');
+                console.log('NAME2: ' + nameFile);
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                link.click();
+            }
         }
     });
 
@@ -61,6 +74,7 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
     useEffect(() => {
         authGetData({
             url: `${Endpoint.LIST_LOCATION_STORE}`,
+            setLoading,
             onSuccess: (res) => {
                 if (res.statusCode === 200) {
                     setListViTriCuaHang(res.data);
@@ -86,7 +100,7 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
     //     });
     // }, []);
     return (
-        <Container>
+        <Spin spinning={loading}>
             <Form
                 width="1200px"
                 form={form}
@@ -96,6 +110,28 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
                 autoComplete="off"
             >
                 <Row gutter={24}>
+                    {params.includes('Month') && (
+                        <Col span={24} sm={12} xl={8}>
+                            <Form.Item
+                                name="month"
+                                label="Tháng"
+                                rules={[
+                                    {
+                                        message: 'Tháng được để trống!',
+                                        required: true,
+                                    },
+                                ]}
+                            >
+                                <Selection
+                                    url={Endpoint.GET_MONTH}
+                                    formKey="month"
+                                    form={form}
+                                    placeholder="Chọn tháng"
+                                />
+                            </Form.Item>
+                        </Col>
+                    )}
+
                     {params.includes('FrDate') && (
                         <Col span={24} sm={12} xl={8}>
                             <Form.Item
@@ -158,7 +194,6 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
                         <Col span={24} sm={12} xl={8}>
                             <Form.Item label="Vị trí" name="StoreId">
                                 <Select
-                                    defaultValue=""
                                     showSearch
                                     placeholder="--- Chọn vị trí ---"
                                     style={{
@@ -211,19 +246,6 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
                     Xuất Excel
                 </Button>
             </Form>
-        </Container>
+        </Spin>
     );
-}
-
-function getFileName(response) {
-    let filename = '';
-    const disposition = response.headers['content-disposition'];
-    if (disposition && disposition.indexOf('filename') !== -1) {
-        const filenameRegex = /UTF-8(.*)/;
-        const matches = filenameRegex.exec(disposition);
-        if (matches !== null && matches[1]) {
-            filename = decodeURIComponent(matches[1].replace(/['"]/g, ''));
-        }
-    }
-    return filename;
 }

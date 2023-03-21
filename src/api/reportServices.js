@@ -21,7 +21,8 @@ export const chiTietInOut = async (params) => {
     // }
 };
 
-export const downLoadFile = async (params) => {
+export const downLoadFile = async (params, setLoading) => {
+    setLoading(true);
     try {
         console.log('params : ' + params);
         const res = await request.downLoadFile(`/reportTimekeeping?${params}`);
@@ -29,6 +30,8 @@ export const downLoadFile = async (params) => {
         console.log('resAPIData' + res.data);
         return res;
     } catch (error) {
-        console.log(error);
+        console.log('error' + error);
+    } finally {
+        setLoading(false);
     }
 };

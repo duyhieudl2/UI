@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { FileDoneOutlined, SettingOutlined } from '@ant-design/icons';
-import { Menu, Tooltip } from 'antd';
+import { Menu, Tooltip, Spin } from 'antd';
 import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { authGetData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
@@ -21,6 +21,7 @@ function getItem(label, key, icon, children, type, link) {
 }
 
 export default function Sidebar() {
+    const [loading, setLoading] = useState(false);
     let location = useLocation();
     const token = localStorage.getItem('accessToken');
 
@@ -29,6 +30,7 @@ export default function Sidebar() {
     useEffect(() => {
         authGetData({
             url: `${Endpoint.LIST_MENU}`,
+            setLoading,
             onSuccess: (res) => {
                 if (res.statusCode === 200) {
                     setDataMenu(res.data);
@@ -62,7 +64,6 @@ export default function Sidebar() {
     });
 
     const logoutHanlder = () => {
-        console.log('cleear');
         localStorage.clear();
         naviagete('/login');
     };
@@ -70,14 +71,6 @@ export default function Sidebar() {
     const [submenu, setSubmenu] = useState([]);
 
     useEffect(() => {
-        // console.log(
-        //     'find: ' +
-        //         JSON.stringify(
-        //             dataMenu.find(
-        //                 (item) => item.subItems && item.subItems.find((item) => item.url === location.pathname),
-        //             ),
-        //         ),
-        // );
         if (!dataMenu.find((item) => item.url === location.pathname)) {
             if (
                 dataMenu.find((item) => item.subItems && item.subItems.find((item) => item.url === location.pathname))
@@ -99,7 +92,7 @@ export default function Sidebar() {
     };
 
     return (
-        <div className="menu-left">
+        <Spin spinning={loading}>
             <Menu
                 onClick={onClick}
                 style={
@@ -120,6 +113,6 @@ export default function Sidebar() {
                     Đăng xuất
                 </button>
             </div>
-        </div>
+        </Spin>
     );
 }

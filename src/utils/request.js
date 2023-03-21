@@ -8,6 +8,7 @@ import {
     STATUSCODE_401,
     STATUSCODE_500,
     TOKEN_NAME,
+    BASE_API_URL,
 } from './constants';
 import { Modal, notification } from 'antd';
 import Axios from 'axios';
@@ -109,8 +110,8 @@ async function defaultPost(endpoint, method, payload) {
         data: body,
     });
 }
-export async function authGetData({ url, onSuccess }) {
-    // setLoading(true);
+export async function authGetData({ url, onSuccess, setLoading }) {
+    setLoading(true);
     try {
         const res = await authGet(url);
         if (res && res.data) {
@@ -118,12 +119,12 @@ export async function authGetData({ url, onSuccess }) {
         }
     } catch (err) {
     } finally {
-        // setLoading(false);
+        setLoading(false);
     }
 }
 
-export async function postData({ url, payload, method = METHOD_POST, onSuccess }) {
-    // setLoading(true);
+export async function postData({ url, payload, method = METHOD_POST, onSuccess, setLoading }) {
+    setLoading(true);
     try {
         const res = await defaultPost(url, method, payload);
         if (res && res.data) {
@@ -132,7 +133,7 @@ export async function postData({ url, payload, method = METHOD_POST, onSuccess }
     } catch (err) {
         console.log('err' + err);
     } finally {
-        // setLoading(false);
+        setLoading(false);
     }
 }
 
@@ -230,7 +231,7 @@ export const downLoadFile = async (parmas) => {
         },
         responseType: 'blob',
         method: 'GET',
-        url: `http://172.16.71.134/api${parmas}`,
+        url: `${BASE_API_URL}${parmas}`,
     });
     return res;
 };

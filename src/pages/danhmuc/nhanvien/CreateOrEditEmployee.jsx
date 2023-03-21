@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Row, Col, Form, Input, Select, Option, Spin, EditOutlined } from 'antd';
+import React, { useEffect, useState, useCallback, Fragment } from 'react';
+import { Button, Row, Col, Form, Input, Select, Radio, Spin, DatePicker } from 'antd';
 import { width } from '@mui/system';
 import { authPostData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
@@ -8,8 +8,8 @@ import Selection from '~/components/Select';
 
 export default function CreateOrEditEmployee(props) {
     const [form] = Form.useForm();
-    const { getDepartmentList, close, detailData } = props;
-
+    const { getEmployeeList, close, detailData } = props;
+    console.log(detailData.id);
     useEffect(() => {
         form.resetFields();
         form.setFieldsValue(detailData);
@@ -17,10 +17,16 @@ export default function CreateOrEditEmployee(props) {
 
     const [loading, setLoading] = useState(false);
 
+    const handleChangeDivision = useCallback(() => {
+        form.setFieldsValue({
+            departmentCode: undefined,
+        });
+    }, [form]);
+
     const onFinish = (values) => {
         console.log('dsadsa' + JSON.stringify(values));
         authPostData({
-            url: `${Endpoint.CRUD_DEPARTMENT}`,
+            url: `${Endpoint.CRUD_EMPLOYEE}`,
             method: 'POST',
             setLoading,
             payload: {
@@ -30,7 +36,7 @@ export default function CreateOrEditEmployee(props) {
                 if (res.statusCode === 200 && res.data) {
                     form.resetFields();
                     close();
-                    getDepartmentList();
+                    getEmployeeList();
                 } else {
                     getErrorForm(res, form);
                 }
@@ -57,12 +63,37 @@ export default function CreateOrEditEmployee(props) {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             form={form}
+            style={{ maxHeight: '400px', overflowY: 'scroll', margin: 'auto' }}
         >
             <Form.Item name="id" style={{ display: 'none' }}></Form.Item>
 
             <Form.Item
-                label="Bộ phận"
+                name="name"
+                label="Họ và tên"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Họ và tên không được để trống!',
+                    },
+                ]}
+            >
+                <Input />
+            </Form.Item>
+            <Form.Item
+                name="code"
+                label="Mã nhân viên"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Mã nhân viên không được để trống!',
+                    },
+                ]}
+            >
+                <Input />
+            </Form.Item>
+            <Form.Item
                 name="divisionCode"
+                label="Bộ phận"
                 rules={[
                     {
                         required: true,
@@ -72,42 +103,158 @@ export default function CreateOrEditEmployee(props) {
             >
                 <Selection
                     url={Endpoint.LIST_BOPHAN}
-                    form={form}
                     formKey="divisionCode"
-                    // setValue={handleChangeUnit}
-                    placeholder="--- Chọn bộ phận ---"
+                    form={form}
+                    setValue={handleChangeDivision}
+                    placeholder="Chọn bộ phận"
                 />
             </Form.Item>
 
             <Form.Item
-                label="Tên phòng ban"
-                name="name"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Tên phòng ban không được để trống!',
-                    },
-                ]}
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => prevValues.divisionCode !== currentValues.divisionCode}
             >
-                <Input />
+                {({ getFieldValue }) => {
+                    if (getFieldValue('divisionCode')) {
+                        return (
+                            <Form.Item
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Phòng ban không được để trống!',
+                                    },
+                                ]}
+                                name="departmentCode"
+                                label="Phòng/Ban"
+                            >
+                                <Selection
+                                    url={`${Endpoint.LIST_PHONGBAN}?divisionCode=${getFieldValue('divisionCode')}`}
+                                    formKey="departmentCode"
+                                    form={form}
+                                    disabled={!getFieldValue('divisionCode')}
+                                    placeholder="Chọn Phòng/Ban"
+                                />
+                            </Form.Item>
+                        );
+                    }
+                    return (
+                        <Form.Item
+                            name="departmentCode"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Phòng ban không được để trống!',
+                                },
+                            ]}
+                            label="Phòng/Ban"
+                        >
+                            <Select disabled />
+                        </Form.Item>
+                    );
+                }}
             </Form.Item>
 
             <Form.Item
-                label="Mã phòng ban"
-                name="code"
+                name="positionCode"
+                label="Chức vụ"
                 rules={[
                     {
                         required: true,
-                        message: 'Mã phòng ban không được để trống!',
+                        message: 'Chức vụ không được để trống!',
                     },
                 ]}
             >
-                <Input readOnly={detailData.id ? true : false} />
+                <Selection
+                    url={Endpoint.LIST_CHUCVU}
+                    formKey="positionCode"
+                    form={form}
+                    // setValue={handleChangeDivision}
+                    placeholder="Chọn chức vụ"
+                />
             </Form.Item>
 
-            <Form.Item label="Địa điểm" name="location">
-                <Input />
+            <Form.Item name="managerCode" label="Quản lý trực tiếp">
+                <Selection url={Endpoint.LIST_MANAGER} formKey="managerCode" form={form} placeholder="Chọn quản lý" />
             </Form.Item>
+
+            <Form.Item
+                name="abilityCode"
+                label="Chức danh"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Chức danh không được để trống!',
+                    },
+                ]}
+            >
+                <Selection
+                    url={Endpoint.LIST_CHUCDANH}
+                    formKey="abilityCode"
+                    form={form}
+                    // setValue={handleChangeDivision}
+                    placeholder="Chọn chức vụ"
+                />
+            </Form.Item>
+
+            {detailData.id === undefined ? (
+                <>
+                    <Form.Item name="startDate" label="Thời gian bắt đầu">
+                        <DatePicker
+                            placeholder="--- Chọn ngày ---"
+                            format="DD/MM/YYYY"
+                            style={{ width: '50%' }}
+                        ></DatePicker>
+                    </Form.Item>
+
+                    <Form.Item name="endDate" label="Kết thúc hợp đồng">
+                        <DatePicker
+                            placeholder="--- Chọn ngày ---"
+                            format="DD/MM/YYYY"
+                            style={{ width: '50%' }}
+                        ></DatePicker>
+                    </Form.Item>
+                </>
+            ) : (
+                <></>
+            )}
+
+            {/* {detailData.id > 0 ==
+                true(
+                    <>
+                        <Form.Item name="dateHire" label="Thời gian bắt đầu">
+                            <DatePicker
+                                placeholder="--- Chọn ngày ---"
+                                format="DD/MM/YYYY"
+                                style={{ width: '50%' }}
+                            ></DatePicker>
+                        </Form.Item>
+                        <Form.Item name="dateExpire" label="Kết thúc hợp đồng">
+                            <DatePicker
+                                placeholder="--- Chọn ngày ---"
+                                format="DD/MM/YYYY"
+                                style={{ width: '50%' }}
+                            ></DatePicker>
+                        </Form.Item>
+                    </>,
+                )} */}
+            {/* <Form.Item name="dateHire" label="Thời gian bắt đầu">
+                <DatePicker placeholder="--- Chọn ngày ---" format="DD/MM/YYYY" style={{ width: '50%' }}></DatePicker>
+            </Form.Item> */}
+
+            {/* <Form.Item name="dateExpire" label="Kết thúc hợp đồng">
+                <DatePicker placeholder="--- Chọn ngày ---" format="DD/MM/YYYY" style={{ width: '50%' }}></DatePicker>
+            </Form.Item> */}
+
+            {/* <Form.Item name="sex" label="Giới tính">
+                <Radio.Group>
+                    <Radio value="Nam">Nam</Radio>
+                    <Radio value="Nữ">Nữ</Radio>
+                </Radio.Group>
+            </Form.Item>
+
+            <Form.Item name="age" label="Ngày sinh">
+                <DatePicker placeholder="--- Chọn ngày ---" format="DD/MM/YYYY" style={{ width: '50%' }}></DatePicker>
+            </Form.Item> */}
 
             <Form.Item
                 wrapperCol={{
