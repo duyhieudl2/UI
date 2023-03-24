@@ -1,5 +1,5 @@
-// export const BASE_API_URL = 'http://172.16.71.134/api';
-export const BASE_API_URL = 'http://chamcong-api-uat.brgretail.vn/api';
+export const BASE_API_URL = 'http://172.16.71.134/api';
+// export const BASE_API_URL = 'http://chamcong-api-uat.brgretail.vn/api';
 
 export const TOKEN_NAME = 'accessToken';
 export const DEBOUNCE_INPUT_SEARCH_DELAY = 1000;

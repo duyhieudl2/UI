@@ -42,7 +42,8 @@ export default function Sidebar() {
 
     const naviagete = useNavigate();
 
-    const items = dataMenu?.map((array, index) => {
+    console.log('datasss: ' + JSON.stringify(dataMenu));
+    const items = dataMenu.map((array, index) => {
         return getItem(
             <Tooltip placement="right" title={array.name}>
                 {array.name}
@@ -50,7 +51,7 @@ export default function Sidebar() {
             array.name,
             <SettingOutlined />,
 
-            array.subItems?.map((item, index2) => {
+            array.subItems.map((item, index2) => {
                 return getItem(
                     <Tooltip placement="right" title={item.name}>
                         <Link to={item.url} className="link" key={item.link}>
@@ -100,6 +101,7 @@ export default function Sidebar() {
                         // width: 256,
                     }
                 }
+                theme="dark"
                 mode="inline"
                 items={items}
                 selectedKeys={location.pathname}
@@ -108,11 +110,11 @@ export default function Sidebar() {
                     setSubmenu(openKeys);
                 }}
             />
-            <div style={{ textAlign: 'center', paddingTop: 25 }}>
+            {/* <div style={{ textAlign: 'center', paddingTop: 25 }}>
                 <button onClick={logoutHanlder} style={{ fontWeight: 800, color: 'red', borderColor: '#acabab' }}>
                     Đăng xuất
                 </button>
-            </div>
+            </div> */}
         </Spin>
     );
 }

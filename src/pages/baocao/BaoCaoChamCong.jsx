@@ -100,152 +100,154 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
     //     });
     // }, []);
     return (
-        <Spin spinning={loading}>
-            <Form
-                width="1200px"
-                form={form}
-                name="filter-form"
-                onFinish={handleSearch}
-                layout="vertical"
-                autoComplete="off"
-            >
-                <Row gutter={24}>
-                    {params.includes('Month') && (
-                        <Col span={24} sm={12} xl={8}>
-                            <Form.Item
-                                name="month"
-                                label="Tháng"
-                                rules={[
-                                    {
-                                        message: 'Tháng được để trống!',
-                                        required: true,
-                                    },
-                                ]}
-                            >
-                                <Selection
-                                    url={Endpoint.GET_MONTH}
-                                    formKey="month"
-                                    form={form}
-                                    placeholder="Chọn tháng"
-                                />
-                            </Form.Item>
-                        </Col>
-                    )}
-
-                    {params.includes('FrDate') && (
-                        <Col span={24} sm={12} xl={8}>
-                            <Form.Item
-                                name="FrDate"
-                                label="Từ ngày"
-                                rules={[
-                                    {
-                                        message: 'Từ ngày không được để trống!',
-                                        required: true,
-                                    },
-                                ]}
-                            >
-                                <DatePicker
-                                    placeholder="--- Chọn ngày ---"
-                                    format="DD/MM/YYYY"
-                                    style={{ width: '100%' }}
-                                ></DatePicker>
-                            </Form.Item>
-                        </Col>
-                    )}
-
-                    {params.includes('ToDate') && (
-                        <Col span={24} sm={12} xl={8}>
-                            <Form.Item
-                                name="ToDate"
-                                label="Đến ngày"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Đến ngày không được để trống! ',
-                                    },
-                                ]}
-                            >
-                                <DatePicker
-                                    placeholder="--- Chọn ngày ---"
-                                    format="DD/MM/YYYY"
-                                    style={{ width: '100%' }}
-                                ></DatePicker>
-                            </Form.Item>
-                        </Col>
-                    )}
-
-                    {params.includes('EmployId') && (
-                        <Col span={24} sm={12} xl={8}>
-                            <Form.Item
-                                label="Mã nhân viên"
-                                name="EmployId"
-                                rules={[
-                                    {
-                                        required: false,
-                                    },
-                                ]}
-                            >
-                                <Input />
-                            </Form.Item>
-                        </Col>
-                    )}
-
-                    {params.includes('StoreId') && (
-                        <Col span={24} sm={12} xl={8}>
-                            <Form.Item label="Vị trí" name="StoreId">
-                                <Select
-                                    showSearch
-                                    placeholder="--- Chọn vị trí ---"
-                                    style={{
-                                        minWidth: 300,
-                                    }}
-                                    filterOption={(input, option) =>
-                                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-                                        option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                    }
+        <div className="filter-table">
+            <Spin spinning={loading}>
+                <Form
+                    width="1200px"
+                    form={form}
+                    name="filter-form"
+                    onFinish={handleSearch}
+                    layout="vertical"
+                    autoComplete="off"
+                >
+                    <Row gutter={24}>
+                        {params.includes('Month') && (
+                            <Col span={24} sm={12} xl={8}>
+                                <Form.Item
+                                    name="month"
+                                    label="Tháng"
+                                    rules={[
+                                        {
+                                            message: 'Tháng được để trống!',
+                                            required: true,
+                                        },
+                                    ]}
                                 >
-                                    {Object.entries(dataCH).map(([key, value]) => (
-                                        <Select.Option key={key} value={value.value}>
-                                            {value.text}
-                                        </Select.Option>
-                                    ))}
-                                    ;
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                    )}
+                                    <Selection
+                                        url={Endpoint.GET_MONTH}
+                                        formKey="month"
+                                        form={form}
+                                        placeholder="Chọn tháng"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        )}
 
-                    {params.includes('DepartmentId') && (
-                        <Col span={24} sm={12} xl={8}>
-                            <Form.Item label="Phòng ban" name="DepartmentId">
-                                <Select
-                                    defaultValue=""
-                                    showSearch
-                                    placeholder="--- Chọn phòng ban ---"
-                                    filterOption={(input, option) =>
-                                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-                                        option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                    }
-                                    style={{
-                                        minWidth: 300,
-                                    }}
+                        {params.includes('FrDate') && (
+                            <Col span={24} sm={12} xl={8}>
+                                <Form.Item
+                                    name="FrDate"
+                                    label="Từ ngày"
+                                    rules={[
+                                        {
+                                            message: 'Từ ngày không được để trống!',
+                                            required: true,
+                                        },
+                                    ]}
                                 >
-                                    {Object.entries(dataPB).map(([key, value]) => (
-                                        <Select.Option key={key} value={value.value}>
-                                            {value.text}
-                                        </Select.Option>
-                                    ))}
-                                    ;
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                    )}
-                </Row>
+                                    <DatePicker
+                                        placeholder="--- Chọn ngày ---"
+                                        format="DD/MM/YYYY"
+                                        style={{ width: '100%' }}
+                                    ></DatePicker>
+                                </Form.Item>
+                            </Col>
+                        )}
 
-                <Button type="primary" htmlType="submit" form="filter-form">
-                    Xuất Excel
-                </Button>
-            </Form>
-        </Spin>
+                        {params.includes('ToDate') && (
+                            <Col span={24} sm={12} xl={8}>
+                                <Form.Item
+                                    name="ToDate"
+                                    label="Đến ngày"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Đến ngày không được để trống! ',
+                                        },
+                                    ]}
+                                >
+                                    <DatePicker
+                                        placeholder="--- Chọn ngày ---"
+                                        format="DD/MM/YYYY"
+                                        style={{ width: '100%' }}
+                                    ></DatePicker>
+                                </Form.Item>
+                            </Col>
+                        )}
+
+                        {params.includes('EmployId') && (
+                            <Col span={24} sm={12} xl={8}>
+                                <Form.Item
+                                    label="Mã nhân viên"
+                                    name="EmployId"
+                                    rules={[
+                                        {
+                                            required: false,
+                                        },
+                                    ]}
+                                >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                        )}
+
+                        {params.includes('StoreId') && (
+                            <Col span={24} sm={12} xl={8}>
+                                <Form.Item label="Vị trí" name="StoreId">
+                                    <Select
+                                        showSearch
+                                        placeholder="--- Chọn vị trí ---"
+                                        style={{
+                                            minWidth: 300,
+                                        }}
+                                        filterOption={(input, option) =>
+                                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+                                            option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
+                                        {Object.entries(dataCH).map(([key, value]) => (
+                                            <Select.Option key={key} value={value.value}>
+                                                {value.text}
+                                            </Select.Option>
+                                        ))}
+                                        ;
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+                        )}
+
+                        {params.includes('DepartmentId') && (
+                            <Col span={24} sm={12} xl={8}>
+                                <Form.Item label="Phòng ban" name="DepartmentId">
+                                    <Select
+                                        defaultValue=""
+                                        showSearch
+                                        placeholder="--- Chọn phòng ban ---"
+                                        filterOption={(input, option) =>
+                                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+                                            option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        style={{
+                                            minWidth: 300,
+                                        }}
+                                    >
+                                        {Object.entries(dataPB).map(([key, value]) => (
+                                            <Select.Option key={key} value={value.value}>
+                                                {value.text}
+                                            </Select.Option>
+                                        ))}
+                                        ;
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+                        )}
+                    </Row>
+
+                    <Button type="primary" htmlType="submit" form="filter-form">
+                        Xuất Excel
+                    </Button>
+                </Form>
+            </Spin>
+        </div>
     );
 }

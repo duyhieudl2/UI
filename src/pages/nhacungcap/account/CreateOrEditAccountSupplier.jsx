@@ -83,48 +83,18 @@ export default function CreateOrEditAccountSupplier(props) {
                 </Col>
 
                 <Col span={24} sm={12} xl={12}>
-                    <Form.Item
-                        label="Họ và tên"
-                        name="name"
-                        style={{ marginBottom: '8px' }}
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Họ và tên không được để trống!',
-                            },
-                        ]}
-                    >
+                    <Form.Item label="Họ và tên" name="name" style={{ marginBottom: '8px' }}>
                         <Input />
                     </Form.Item>
                 </Col>
 
                 <Col span={24} sm={12} xl={12}>
-                    <Form.Item
-                        label="Địa chỉ Email"
-                        name="email"
-                        style={{ marginBottom: '8px' }}
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Email không được để trống!',
-                            },
-                        ]}
-                    >
+                    <Form.Item label="Địa chỉ Email" name="email" style={{ marginBottom: '8px' }}>
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={24} sm={12} xl={12}>
-                    <Form.Item
-                        label="Số điện thoại"
-                        name="phone"
-                        style={{ marginBottom: '8px' }}
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Số điện thoại không được để trống!',
-                            },
-                        ]}
-                    >
+                    <Form.Item label="Số điện thoại" name="phone" style={{ marginBottom: '8px' }}>
                         <Input />
                     </Form.Item>
                 </Col>

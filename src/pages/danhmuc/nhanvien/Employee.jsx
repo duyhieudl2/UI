@@ -155,10 +155,11 @@ export default function Employee() {
 
     console.log('filterConditions.pageIndex ' + filterConditions.pageIndex);
     return (
-        <>
+        <div className="table-container">
             <Spin spinning={loading}>
                 <FormBoLoc handleSearch={handleSearch} handleOpenModal={handleOpenModal} form={form} />
-                <div>
+
+                <div className="filter-table">
                     <Modal
                         open={open}
                         title={detailData.id ? 'Cập nhật nhân viên' : 'Thêm mới'}
@@ -173,24 +174,28 @@ export default function Employee() {
                         />
                     </Modal>
                 </div>
-                {/* <ListFilter handleSearch={handleSearch} /> */}
-                <div>
+
+                <div className="table-list">
                     <Table
                         columns={columns}
                         dataSource={data}
                         rowKey={(record) => record.id}
                         onChange={onChangePagination}
                         pagination={{
-                            current: filterConditions.pageIndex,
-                            defaultPageSize: filterConditions.pageSize,
-                            defaultPageIndex: filterConditions.pageIndex,
-                            showSizeChanger: true,
                             total: total ? total : 0,
+                            defaultpageSize: DEFAULT_PAGESIZE,
+                            defaultCurrent: 1,
+                            current: parseInt(filterConditions.pageIndex),
+                            pageSize: parseInt(filterConditions.pageSize),
+                            showSizeChanger: true,
+                            showLessItems: true,
                             pageSizeOptions: ['5', '10', '20', '50', '100'],
+                            showTotal: (total) => `Tổng ${total} bản ghi`,
                         }}
+                        bordered
                     />
                 </div>
             </Spin>
-        </>
+        </div>
     );
 }

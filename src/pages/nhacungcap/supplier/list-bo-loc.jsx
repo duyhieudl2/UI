@@ -1,4 +1,3 @@
-import { style } from '@mui/system';
 import { Button, Col, Form, Input, Row, Tooltip, Space, Select, DatePicker } from 'antd';
 import Selection from '~/components/Select';
 import { Endpoint } from '~/utils/endpoint';
@@ -18,7 +17,7 @@ export default function FormBoLoc(props) {
         >
             <Row gutter={24} justify="space-between" align="middle">
                 <Col span={24} sm={12} xl={8}>
-                    <Form.Item name="branchId" label="Ngành hàng">
+                    <Form.Item name="branchId" label="Ngành hàng" className="form-filter-table">
                         <Selection url={Endpoint.LIST_NGANHHANG} formKey="branchId" form={form} />
                     </Form.Item>
                 </Col>
@@ -32,7 +31,7 @@ export default function FormBoLoc(props) {
                                 required: false,
                             },
                         ]}
-                        style={{ marginBottom: '8px', marginTop: '-8px' }}
+                        className="form-filter-table"
                     >
                         <Input />
                     </Form.Item>
@@ -47,25 +46,21 @@ export default function FormBoLoc(props) {
                                 required: false,
                             },
                         ]}
-                        style={{ marginBottom: '8px', marginTop: '-8px' }}
+                        className="form-filter-table"
                     >
                         <Input />
                     </Form.Item>
                 </Col>
 
                 <Col span={24} sm={12} xl={8}>
-                    <Form.Item name="frDate" label="Thời gian" style={{ marginBottom: '8px', marginTop: '-8px' }}>
+                    <Form.Item name="frDate" label="Thời gian" className="form-filter-table">
                         <DatePicker.RangePicker style={{ width: '100%' }} />
                     </Form.Item>
                 </Col>
 
-                <Col span={24} sm={24} xl={24} style={{ textAlign: 'right', marginBottom: '10px' }}>
+                <Col span={24} sm={12} xl={8} style={{ textAlign: 'right' }}>
                     <Button type="primary" htmlType="submit" style={{ marginRight: '15px' }} form="filter-form">
                         Tìm kiếm
-                    </Button>
-
-                    <Button type="primary" onClick={() => handleExportExcel(form.getFieldsValue())}>
-                        Xuất Excel
                     </Button>
                 </Col>
             </Row>

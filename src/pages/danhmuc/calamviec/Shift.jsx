@@ -165,37 +165,41 @@ export default function Shift() {
         },
     ];
     return (
-        <>
+        <div className="table-container">
             <Spin spinning={loading}>
-                <FormBoLoc handleSearch={handleSearch} handleOpenModal={handleOpenModal} form={form} />
-                <div>
-                    <Modal
-                        open={open}
-                        title={detailData.id ? 'Cập nhật phòng ban' : 'Thêm mới'}
-                        onCancel={handleCancel}
-                        footer={[]}
-                        width="800px"
-                    >
-                        <CreateOrEditShift getShiftList={getShiftList} close={handleCancel} detailData={detailData} />
-                    </Modal>
+                <Modal
+                    open={open}
+                    title={detailData.id ? 'Cập nhật phòng ban' : 'Thêm mới'}
+                    onCancel={handleCancel}
+                    footer={[]}
+                    width="800px"
+                >
+                    <CreateOrEditShift getShiftList={getShiftList} close={handleCancel} detailData={detailData} />
+                </Modal>
+                <div className="filter-table">
+                    <FormBoLoc handleSearch={handleSearch} handleOpenModal={handleOpenModal} form={form} />
                 </div>
-                {/* <ListFilter handleSearch={handleSearch} /> */}
-                <div>
+                <div className="table-list">
                     <Table
                         columns={columns}
                         dataSource={data}
                         rowKey={(record) => record.id}
                         onChange={onChangePagination}
                         pagination={{
-                            current: filterConditions.pageIndex,
-                            defaultPageSize: filterConditions.pageSize,
-                            showSizeChanger: true,
                             total: total ? total : 0,
+                            defaultpageSize: DEFAULT_PAGESIZE,
+                            defaultCurrent: 1,
+                            current: parseInt(filterConditions.pageIndex),
+                            pageSize: parseInt(filterConditions.pageSize),
+                            showSizeChanger: true,
+                            showLessItems: true,
                             pageSizeOptions: ['5', '10', '20', '50', '100'],
+                            showTotal: (total) => `Tổng ${total} bản ghi`,
                         }}
+                        bordered
                     />
                 </div>
             </Spin>
-        </>
+        </div>
     );
 }

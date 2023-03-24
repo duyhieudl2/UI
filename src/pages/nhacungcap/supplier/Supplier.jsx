@@ -28,8 +28,8 @@ export default function Supplier() {
     const [form] = Form.useForm();
 
     const [filterConditions, setFilterConditions] = useState({
-        pageSize: DEFAULT_PAGESIZE,
-        pageIndex: DEFAULT_PAGEINDEX,
+        pageSize: parseParams(location.search).pageSize || DEFAULT_PAGESIZE,
+        pageIndex: parseParams(location.search).pageIndex || DEFAULT_PAGEINDEX,
         ...parseParams(location.search),
     });
 
@@ -66,30 +66,9 @@ export default function Supplier() {
             if (row !== undefined) setdetailData(row);
             else setdetailData({});
             setOpen(!open);
-            console.log(detailData);
         },
         [open],
     );
-    // Add user
-    const handleOpenModelAddUser = useCallback(
-        (row) => {
-            if (row !== undefined) setdetailData(row);
-            else setdetailData({});
-            setOpen2(!open2);
-            console.log(detailData);
-        },
-        [open2],
-    );
-
-    const handleDelete = useCallback((id) => {
-        authDeleteData({
-            url: `${Endpoint.CRUD_Supplier}/${id}`,
-            setLoading,
-            onSuccess: () => {
-                getSupplierList();
-            },
-        });
-    });
 
     const handleCancel = useCallback(() => {
         setOpen(false);
@@ -117,7 +96,6 @@ export default function Supplier() {
         const params = `/${Endpoint.EX_EXCEL_SUPPLIER}?${query}`;
         const res = await downLoadFile(params);
 
-        console.log(res.headers.get('content-disposition'));
         const fileName = 'NCC.xlsx';
         if (res && res.data && res.status === 200) {
             const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -146,25 +124,43 @@ export default function Supplier() {
                             <EditOutlined onClick={() => handleOpenModal(row)} />
                         </Tooltip>
                     </a>
-                    <a className="add-users-icons">
+                    {/* <a className="add-users-icons">
                         <Tooltip title="Thêm người dùng">
                             <UsergroupAddOutlined onClick={() => handleOpenModelAddUser(row)} />
                         </Tooltip>
-                    </a>
+                    </a> */}
                 </div>
             ),
+        },
+        {
+            title: 'Tên người LH',
+            width: '15%',
+            dataIndex: 'contactName',
+            fixed: 'left',
+        },
+        {
+            title: 'SĐT LH người đặt hàng',
+            width: '15%',
+            dataIndex: 'contactPhone',
+            fixed: 'left',
+        },
+        {
+            title: 'Email',
+            width: '15%',
+            dataIndex: 'contactEmail',
+            fixed: 'left',
         },
         {
             title: 'Mã nhà cung cấp',
             width: '20%',
             dataIndex: 'code',
-            fixed: 'left',
+            fixed: 'center',
         },
         {
             title: 'Tên nhà cung cấp',
             width: '25%',
             dataIndex: 'name',
-            fixed: 'left',
+            fixed: 'center',
         },
 
         {
@@ -242,53 +238,31 @@ export default function Supplier() {
             dataIndex: 'debtPillow',
             fixed: 'center',
         },
-        {
-            title: 'Tên người LH',
-            width: '15%',
-            dataIndex: 'contactName',
-            fixed: 'center',
-        },
-        {
-            title: 'SĐT LH người đặt hàng',
-            width: '15%',
-            dataIndex: 'contactPhone',
-            fixed: 'center',
-        },
-        {
-            title: 'Email',
-            width: '15%',
-            dataIndex: 'contactEmail',
-            fixed: 'center',
-        },
     ];
+
     return (
-        <>
+        <div className="table-container">
             <Spin spinning={loading}>
-                <div>
+                <Modal open={open2} title={'Thêm người dùng'} onCancel={handleCancel} footer={[]} width="800px">
+                    <AddUser getSupplierList={getSupplierList} close={handleCancel} detailData={detailData} />
+                </Modal>
+
+                <Modal
+                    className="centered-modal"
+                    open={open}
+                    title={detailData.id ? 'Cập nhật Supplier' : 'Thêm mới'}
+                    onCancel={handleCancel}
+                    footer={[]}
+                    width="900px"
+                    style={{ top: 'auto' }}
+                    closable={false}
+                >
+                    <CreateSupplier getSupplierList={getSupplierList} close={handleCancel} detailData={detailData} />
+                </Modal>
+                <div className="filter-table">
                     <FormBoLoc handleSearch={handleSearch} handleExportExcel={handleExportExcel} form={form} />
-
-                    <Modal open={open2} title={'Thêm người dùng'} onCancel={handleCancel} footer={[]} width="800px">
-                        <AddUser getSupplierList={getSupplierList} close={handleCancel} detailData={detailData} />
-                    </Modal>
-
-                    <Modal
-                        className="centered-modal"
-                        open={open}
-                        title={detailData.id ? 'Cập nhật Supplier' : 'Thêm mới'}
-                        onCancel={handleCancel}
-                        footer={[]}
-                        width="800px"
-                        style={{ top: 'auto' }}
-                    >
-                        <CreateSupplier
-                            getSupplierList={getSupplierList}
-                            close={handleCancel}
-                            detailData={detailData}
-                        />
-                    </Modal>
                 </div>
-                {/* <ListFilter handleSearch={handleSearch} /> */}
-                <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 288px)' }}>
+                <div className="table-list">
                     <Table
                         columns={columns}
                         scroll={{ x: 2300 }}
@@ -296,16 +270,20 @@ export default function Supplier() {
                         rowKey={(record) => record.id}
                         onChange={onChangePagination}
                         pagination={{
-                            current: filterConditions.pageIndex,
-                            defaultPageSize: filterConditions.pageSize,
-                            showSizeChanger: true,
                             total: total ? total : 0,
+                            defaultpageSize: DEFAULT_PAGESIZE,
+                            defaultCurrent: 1,
+                            current: parseInt(filterConditions.pageIndex),
+                            pageSize: parseInt(filterConditions.pageSize),
+                            showSizeChanger: true,
+                            showLessItems: true,
                             pageSizeOptions: ['5', '10', '20', '50', '100'],
+                            showTotal: (total) => `Tổng ${total} bản ghi`,
                         }}
                         bordered
                     />
                 </div>
             </Spin>
-        </>
+        </div>
     );
 }

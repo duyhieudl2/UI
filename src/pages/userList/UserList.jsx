@@ -1,13 +1,14 @@
 import React from 'react';
 import { Table } from 'antd';
-import { buildQueryString, parseParams, handlePagination } from '~/utils/function';
+import { buildQueryString, parseParams, handlePagination, removeUndefinedAttribute } from '~/utils/function';
 import { useEffect, useState, useCallback } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { authGetData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
 import CreateUser from './CreateOrEditUser';
 import { Button, Modal, Pagination } from 'antd';
-import { ListFilter } from './list-bo-loc';
+import { DEFAULT_PAGEINDEX, DEFAULT_PAGESIZE, STATUSCODE_200 } from '~/utils/constants';
+import { FormBoLoc } from './list-bo-loc';
 
 const columns = [
     {
@@ -49,76 +50,84 @@ const columns = [
 ];
 
 export default function UserList() {
-    const [data, setUserList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [, setSearchParams] = useSearchParams();
+    const [data, setData] = useState([]);
     const location = useLocation();
+    const [total, setTotal] = useState();
+
     const [filterConditions, setFilterConditions] = useState({
-        pageSize: 10,
-        pageIndex: 1,
+        pageSize: DEFAULT_PAGESIZE,
+        pageIndex: DEFAULT_PAGEINDEX,
         ...parseParams(location.search),
     });
 
+    // Get List
     const getUserList = useCallback(() => {
+        const query = buildQueryString(filterConditions);
         authGetData({
-            url: `${Endpoint.LIST_USERS}?${buildQueryString(filterConditions)}`,
+            url: `${Endpoint.CRUD_ACCOUNT_SUPPLIER}?${query}`,
+            setLoading,
             onSuccess: (res) => {
-                if (res.statusCode === 200) {
-                    setUserList(res.data);
+                if (res.statusCode === STATUSCODE_200) {
+                    // setData(res.data);
+                    setData(
+                        res.data.map((item, index) => {
+                            return {
+                                ...item,
+                                STT: (filterConditions.pageIndex - 1) * filterConditions.pageSize + (index + 1),
+                            };
+                        }),
+                    );
+                    setTotal(res.paging.totalCount);
                 }
             },
         });
+        setSearchParams(removeUndefinedAttribute(filterConditions));
     }, [filterConditions]);
-
     useEffect(() => {
-        authGetData({
-            url: `${Endpoint.LIST_USERS}?${buildQueryString(filterConditions)}`,
-            onSuccess: (res) => {
-                if (res.statusCode === 200) {
-                    setUserList(res.data);
-                }
-            },
-        });
+        getUserList();
     }, [filterConditions]);
 
-    console.log('userData: ' + JSON.stringify(data));
-
-    // // Create Or Edit
-    // const [open, setOpen] = useState(false);
-    // const showModal = () => {
-    //     setOpen(true);
-    // };
-    // const handleCancel = () => {
-    //     setOpen(false);
-    // };
     // Handler Search
 
     const onChangePagination = (paging, filters, sorter) => {
-        console.log('change: ' + JSON.stringify(filterConditions));
         handlePagination(paging, sorter, setFilterConditions);
     };
 
     const handleSearch = useCallback((values) => {
+        console.log(JSON.stringify(values));
         setFilterConditions((oldState) => ({
-            ...filterConditions,
             ...oldState,
             ...values,
+            pageIndex: DEFAULT_PAGEINDEX,
+            pageSize: DEFAULT_PAGESIZE,
         }));
     }, []);
 
     return (
-        <div>
-            <ListFilter handleSearch={handleSearch} />
-            <div>
+        <div className="table-container">
+            <div className="filter-table">
+                <FormBoLoc handleSearch={handleSearch} />
+            </div>
+            <div className="table-list">
                 <Table
                     columns={columns}
-                    dataSource={data.data}
+                    dataSource={data}
                     rowKey={(record) => record.id}
                     onChange={onChangePagination}
                     pagination={{
-                        defaultPageSize: filterConditions.pageSize,
+                        total: total ? total : 0,
+                        defaultpageSize: DEFAULT_PAGESIZE,
+                        defaultCurrent: 1,
+                        current: parseInt(filterConditions.pageIndex),
+                        pageSize: parseInt(filterConditions.pageSize),
                         showSizeChanger: true,
-                        total: data.paging ? data.paging.totalCount : 0,
+                        showLessItems: true,
                         pageSizeOptions: ['5', '10', '20', '50', '100'],
+                        showTotal: (total) => `Tổng ${total} bản ghi`,
                     }}
+                    bordered
                 />
             </div>
         </div>

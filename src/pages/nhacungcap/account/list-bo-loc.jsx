@@ -18,19 +18,19 @@ export default function FormBoLoc(props) {
         >
             <Row gutter={24} justify="space-between" align="middle">
                 <Col span={24} sm={12} xl={8}>
-                    <Form.Item label="Tên" name="name" style={{ marginBottom: '8px', marginTop: '-8px' }}>
+                    <Form.Item label="Tên" name="name" className="form-filter-table">
                         <Input />
                     </Form.Item>
                 </Col>
 
                 <Col span={24} sm={12} xl={8}>
-                    <Form.Item label="Email" name="email" style={{ marginBottom: '8px', marginTop: '-8px' }}>
+                    <Form.Item label="Email" name="email" className="form-filter-table">
                         <Input />
                     </Form.Item>
                 </Col>
 
                 <Col span={24} sm={12} xl={8}>
-                    <Form.Item label="Điện thoại" name="phone" style={{ marginBottom: '8px', marginTop: '-8px' }}>
+                    <Form.Item label="Điện thoại" name="phone" className="form-filter-table">
                         <Input />
                     </Form.Item>
                 </Col>

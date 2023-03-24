@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Col, Form, Input, Row, Tooltip, Button, Select } from 'antd';
 import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
 
-export function ListFilter(props) {
+export function FormBoLoc(props) {
     const { handleSearch } = props;
     const [form] = Form.useForm();
 
