@@ -1,55 +1,19 @@
 import React from 'react';
-import { Table } from 'antd';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Table, Form, Spin, Modal, Tooltip } from 'antd';
 import { buildQueryString, parseParams, handlePagination, removeUndefinedAttribute } from '~/utils/function';
 import { useEffect, useState, useCallback } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { authGetData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
-import CreateUser from './CreateOrEditUser';
-import { Button, Modal, Pagination } from 'antd';
+import CreateOrEditUser from './CreateOrEditUser';
 import { DEFAULT_PAGEINDEX, DEFAULT_PAGESIZE, STATUSCODE_200 } from '~/utils/constants';
 import { FormBoLoc } from './list-bo-loc';
 
-const columns = [
-    {
-        title: 'Họ và tên',
-        width: 300,
-        dataIndex: 'name',
-        fixed: 'left',
-    },
-    {
-        title: 'Tên đăng nhập',
-        width: 200,
-        dataIndex: 'userName',
-        key: 'id',
-        fixed: 'left',
-    },
-    {
-        title: 'Email',
-        width: 300,
-        dataIndex: 'email',
-        fixed: 'left',
-    },
-    {
-        title: 'Ngày sinh',
-        width: 200,
-        dataIndex: 'age',
-        fixed: 'left',
-    },
-    {
-        width: 300,
-        title: 'Chức vụ',
-        dataIndex: 'positionName',
-    },
-    {
-        title: 'Trạng thái',
-        fixed: 'right',
-        width: 150,
-        render: () => <a>Hoạt động</a>,
-    },
-];
-
 export default function UserList() {
+    const [open, setOpen] = useState(false);
+    const [detailData, setdetailData] = useState({});
+
     const [loading, setLoading] = useState(false);
     const [, setSearchParams] = useSearchParams();
     const [data, setData] = useState([]);
@@ -89,6 +53,21 @@ export default function UserList() {
         getUserList();
     }, [filterConditions]);
 
+    // Thêm sửa xóa
+    const handleOpenModal = useCallback();
+    // (row) => {
+    //     if (row !== undefined) setdetailData(row);
+    //     else setdetailData({});
+    //     setOpen(!open);
+    //     console.log(setdetailData);
+    // },
+    // [open],
+    ///
+
+    const handleCancel = useCallback(() => {
+        setOpen(false);
+    }, []);
+
     // Handler Search
 
     const onChangePagination = (paging, filters, sorter) => {
@@ -105,31 +84,100 @@ export default function UserList() {
         }));
     }, []);
 
+    const columns = [
+        {
+            title: 'Họ và tên',
+            width: 300,
+            dataIndex: 'name',
+            fixed: 'left',
+        },
+        {
+            title: 'Tên đăng nhập',
+            width: 200,
+            dataIndex: 'userName',
+            key: 'id',
+            fixed: 'left',
+        },
+        {
+            title: 'Email',
+            width: 300,
+            dataIndex: 'email',
+            fixed: 'left',
+        },
+        {
+            title: 'Ngày sinh',
+            width: 200,
+            dataIndex: 'age',
+            fixed: 'left',
+        },
+        {
+            width: 300,
+            title: 'Chức vụ',
+            dataIndex: 'positionName',
+        },
+        {
+            title: 'Trạng thái',
+            fixed: 'right',
+            width: 150,
+            render: () => <a>Hoạt động</a>,
+        },
+        {
+            title: 'Tác vụ',
+            width: 100,
+            fixed: 'center',
+            render: (row) => (
+                <div>
+                    <a className="edit-icons">
+                        <Tooltip title="Sửa">
+                            <EditOutlined onClick={() => handleOpenModal(row)} />
+                        </Tooltip>
+                    </a>
+
+                    {/* <a className="delete-icons">
+                        <Tooltip title="Xóa">
+                            <DeleteOutlined onClick={() => handleDelete(row.id)} />
+                        </Tooltip>
+                    </a> */}
+                </div>
+            ),
+        },
+    ];
     return (
         <div className="table-container">
-            <div className="filter-table">
-                <FormBoLoc handleSearch={handleSearch} />
-            </div>
-            <div className="table-list">
-                <Table
-                    columns={columns}
-                    dataSource={data}
-                    rowKey={(record) => record.id}
-                    onChange={onChangePagination}
-                    pagination={{
-                        total: total ? total : 0,
-                        defaultpageSize: DEFAULT_PAGESIZE,
-                        defaultCurrent: 1,
-                        current: parseInt(filterConditions.pageIndex),
-                        pageSize: parseInt(filterConditions.pageSize),
-                        showSizeChanger: true,
-                        showLessItems: true,
-                        pageSizeOptions: ['5', '10', '20', '50', '100'],
-                        showTotal: (total) => `Tổng ${total} bản ghi`,
-                    }}
-                    bordered
-                />
-            </div>
+            <Spin spinning={loading}>
+                <Modal
+                    open={open}
+                    title={setdetailData.id ? 'Cập nhật bộ phận' : 'Thêm mới'}
+                    onCancel={handleCancel}
+                    footer={[]}
+                    width="800px"
+                >
+                    <CreateOrEditUser getUserList={getUserList} close={handleCancel} setdetailData={setdetailData} />
+                </Modal>
+                <div className="filter-table">
+                    <FormBoLoc handleSearch={handleSearch} />
+                </div>
+                <div className="table-list">
+                    <Table
+                        columns={columns}
+                        dataSource={data}
+                        rowKey={(record) => record.id}
+                        onChange={onChangePagination}
+                        pagination={{
+                            total: total ? total : 0,
+                            defaultpageSize: DEFAULT_PAGESIZE,
+                            defaultCurrent: 1,
+                            current: parseInt(filterConditions.pageIndex),
+                            pageSize: parseInt(filterConditions.pageSize),
+                            showSizeChanger: true,
+                            showLessItems: true,
+                            pageSizeOptions: ['5', '10', '20', '50', '100'],
+                            showTotal: (total) => `Tổng ${total} bản ghi`,
+                        }}
+                        bordered
+                    />
+                </div>
+            </Spin>
         </div>
     );
 }

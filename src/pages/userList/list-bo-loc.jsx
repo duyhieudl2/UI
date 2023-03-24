@@ -26,11 +26,12 @@ export function FormBoLoc(props) {
                     </Form.Item>
                 </Col>
             </Row>
-            <Row justify="end">
+
+            <Col span={24} sm={12} xl={8} style={{ textAlign: 'right' }}>
                 <Button type="primary" htmlType="submit" form="filter-form">
                     Tìm kiếm
                 </Button>
-            </Row>
+            </Col>
         </Form>
     );
 }
