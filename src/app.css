@@ -33,24 +33,53 @@ body {
 .trigger-icon svg {
     font-size: x-large;
 }
+
+/* CSS phần Content */
+.nav-breadcrumb {
+    color: blue;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
 .table-container {
     padding: 5px;
     height: calc(100vh - 130px);
     overflow: auto;
 }
+.form-filter-table {
+    margin-bottom: 5px;
+}
+
 .filter-table {
     margin-top: -5px;
     padding: 5px 10px 10px 10px;
     background: #fdfdfd;
-
+    /* background-color: #f2f2f2; */
+    border: 1px solid #ccc;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
     border: 1px #dfdddd solid;
     margin-bottom: 10px;
     position: sticky;
     top: -5px;
-    z-index: 5;
+    z-index: 3;
+
+    border-radius: 5px;
+    /* margin: auto; */
 }
-.form-filter-table {
-    margin-bottom: 5px;
+
+/* CSS phần Modal Pupop */
+
+.ant-modal-title {
+    text-align: center;
+    font-size: 20px !important;
+    padding-bottom: 10px;
+    color: #1677ff !important;
+}
+
+@media (max-width: 1500px) {
+    .ant-modal-content {
+        margin: auto;
+        width: 75%;
+    }
 }

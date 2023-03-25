@@ -1,7 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import React, { Fragment, useEffect, useState } from 'react';
 import Sidebar from '~/components/sidebar/Sidebar';
-import Topbar from '~/components/topbar/Topbar';
 import * as commonServices from '~/api/commonServices';
 import { useDispatch, useSelector } from 'react-redux';
 import { Breadcrumb, Layout, Menu, theme, Avatar, Dropdown, Tooltip } from 'antd';
@@ -10,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    UploadOutlined,
+    HomeOutlined,
     VideoCameraOutlined,
     LogoutOutlined,
     UserOutlined,
@@ -38,16 +37,6 @@ function PrivateRoute({ children }) {
     const accessToken = localStorage.getItem('accessToken');
 
     const [dataMenu, setMenu] = useState([]);
-
-    // useEffect(() => {
-    //     const fetchApi = async () => {
-    //         const result = await commonServices.listMenu();
-    //         setMenu(result);
-    //     };
-    //     if (accessToken !== null) {
-    //         fetchApi();
-    //     }
-    // }, []);
 
     if (accessToken == null || currentUser !== true) {
         return <Navigate to="/login" />;
@@ -97,12 +86,13 @@ function PrivateRoute({ children }) {
                     </Tooltip>
 
                     <div className="header-right">
-                        <span className="user-name">John Doe</span>
+                        <span className="user-name">Admin</span>
                         <Dropdown overlay={userMenu} trigger={['hover']}>
                             <Avatar icon={<UserOutlined />} className="user-avatar" />
                         </Dropdown>
                     </div>
                 </Header>
+
                 <Content
                     style={{
                         overflowBlock: 'auto',
@@ -114,58 +104,23 @@ function PrivateRoute({ children }) {
                         height: 'calc(100vh - 80px)',
                     }}
                 >
+                    <div className="nav-breadcrumb">
+                        <Breadcrumb>
+                            <Breadcrumb.Item>
+                                <a href="/">Home</a>
+                            </Breadcrumb.Item>
+                            <Breadcrumb.Item>
+                                <a href="/application-center">Application Center</a>
+                            </Breadcrumb.Item>
+                            <Breadcrumb.Item>
+                                <a href="/application-list">Application List</a>
+                            </Breadcrumb.Item>
+                            <Breadcrumb.Item>An Application</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
                     {children}
                 </Content>
             </Layout>
         </Layout>
-
-        // <Layout style={{ maxHeight: '100vh' }}>
-        //     <Header className="header" style={{ height: 70, background: '#e4eff6' }}>
-        //         <div className="logo" style={{ paddingTop: 13 }}>
-        //             <span className="logo" onClick={() => navigate('/')}>
-        //                 <img src={logo} alt="logo" />
-        //             </span>
-        //         </div>
-        //     </Header>
-        //     <Layout>
-        //         <Sider
-        //             width={250}
-        //             height={'auto'}
-        //             style={{
-        //                 background: '#ffffff',
-        //             }}
-        //         >
-        //             <Sidebar />
-        //         </Sider>
-
-        //         <Layout
-        //             className="site-layout"
-        //             style={{
-        //                 maxWidth: '100%',
-        //                 maxHeight: '100%',
-        //                 padding: '0 5px 0 5px',
-        //                 background: '#f1f2f2e6',
-        //             }}
-        //         >
-        //             <Breadcrumb
-        //                 style={{
-        //                     margin: '5px 0',
-        //                 }}
-        //             ></Breadcrumb>
-        //             <Content
-        //                 style={{
-        //                     padding: 15,
-        //                     margin: 0,
-        //                     minHeight: 280,
-
-        //                     // overflowY: 'scroll',
-        //                     // overflowX: 'scroll',
-        //                 }}
-        //             >
-        //                 {children}
-        //             </Content>
-        //         </Layout>
-        //     </Layout>
-        // </Layout>
     );
 }

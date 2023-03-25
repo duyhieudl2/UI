@@ -24,7 +24,7 @@ export default function FormBoLoc(props) {
         >
             <Row gutter={24} justify="space-between" align="middle">
                 <Col span={24} sm={12} xl={8}>
-                    <Form.Item label="Bộ phận" name="divisionCode">
+                    <Form.Item label="Bộ phận" name="divisionCode" className="form-filter-table">
                         <Selection
                             url={Endpoint.LIST_BOPHAN}
                             form={form}
@@ -44,7 +44,7 @@ export default function FormBoLoc(props) {
                         {({ getFieldValue }) => {
                             if (getFieldValue('divisionCode')) {
                                 return (
-                                    <Form.Item name="departmentCode" label="Phòng/Ban">
+                                    <Form.Item name="departmentCode" label="Phòng/Ban" className="form-filter-table">
                                         <Selection
                                             url={`${Endpoint.LIST_PHONGBAN}?divisionCode=${getFieldValue(
                                                 'divisionCode',
@@ -57,7 +57,7 @@ export default function FormBoLoc(props) {
                                 );
                             }
                             return (
-                                <Form.Item name="departmentCode" label="Phòng/Ban">
+                                <Form.Item name="departmentCode" label="Phòng/Ban" className="form-filter-table">
                                     <Select disabled />
                                 </Form.Item>
                             );
@@ -66,13 +66,13 @@ export default function FormBoLoc(props) {
                 </Col>
 
                 <Col span={24} sm={12} xl={8}>
-                    <Form.Item name="positionCode" label="Chức vụ">
+                    <Form.Item name="positionCode" label="Chức vụ" className="form-filter-table">
                         <Selection url={Endpoint.LIST_CHUCVU} formKey="positionCode" form={form} />
                     </Form.Item>
                 </Col>
 
                 <Col span={24} sm={12} xl={8}>
-                    <Form.Item name="searchTerm" label="Tìm kiếm dữ liệu">
+                    <Form.Item name="searchTerm" label="Tìm kiếm dữ liệu" className="form-filter-table">
                         <Input
                             prefix={<SearchOutlined />}
                             suffix={
@@ -87,12 +87,12 @@ export default function FormBoLoc(props) {
                 </Col>
 
                 <Col span={24} sm={12} xl={8}>
-                    <Form.Item name="status" label="Trạng thái">
+                    <Form.Item name="status" label="Trạng thái" className="form-filter-table">
                         <Selection defaultValue="1" url={EMPLOYEE_STATUS} form={form} formKey="status" />
                     </Form.Item>
                 </Col>
 
-                <Col span={24} sm={12} xl={8} style={{ textAlign: 'right' }}>
+                <Col span={24} sm={12} xl={8} style={{ textAlign: 'right', paddingTop: '15px' }}>
                     <Button type="primary" htmlType="submit" style={{ marginRight: '15px' }} form="filter-form">
                         Tìm kiếm
                     </Button>

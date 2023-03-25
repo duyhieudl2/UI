@@ -11,8 +11,10 @@ import { DEFAULT_PAGEINDEX, DEFAULT_PAGESIZE, STATUSCODE_200 } from '~/utils/con
 import { FormBoLoc } from './list-bo-loc';
 
 export default function UserList() {
+    const [form] = Form.useForm();
+
     const [open, setOpen] = useState(false);
-    const [detailData, setdetailData] = useState({});
+    const [detailData, setDetailData] = useState({});
 
     const [loading, setLoading] = useState(false);
     const [, setSearchParams] = useSearchParams();
@@ -30,7 +32,7 @@ export default function UserList() {
     const getUserList = useCallback(() => {
         const query = buildQueryString(filterConditions);
         authGetData({
-            url: `${Endpoint.CRUD_ACCOUNT_SUPPLIER}?${query}`,
+            url: `${Endpoint.LIST_USERS}?${query}`,
             setLoading,
             onSuccess: (res) => {
                 if (res.statusCode === STATUSCODE_200) {
@@ -54,15 +56,14 @@ export default function UserList() {
     }, [filterConditions]);
 
     // Thêm sửa xóa
-    const handleOpenModal = useCallback();
-    // (row) => {
-    //     if (row !== undefined) setdetailData(row);
-    //     else setdetailData({});
-    //     setOpen(!open);
-    //     console.log(setdetailData);
-    // },
-    // [open],
-    ///
+    const handleOpenModal = useCallback(
+        (row) => {
+            if (row !== undefined) setDetailData(row);
+            else setDetailData({});
+            setOpen(!open);
+        },
+        [open],
+    );
 
     const handleCancel = useCallback(() => {
         setOpen(false);
@@ -117,14 +118,12 @@ export default function UserList() {
         },
         {
             title: 'Trạng thái',
-            fixed: 'right',
             width: 150,
             render: () => <a>Hoạt động</a>,
         },
         {
             title: 'Tác vụ',
             width: 100,
-            fixed: 'center',
             render: (row) => (
                 <div>
                     <a className="edit-icons">
@@ -145,17 +144,19 @@ export default function UserList() {
     return (
         <div className="table-container">
             <Spin spinning={loading}>
-                <Modal
-                    open={open}
-                    title={setdetailData.id ? 'Cập nhật bộ phận' : 'Thêm mới'}
-                    onCancel={handleCancel}
-                    footer={[]}
-                    width="800px"
-                >
-                    <CreateOrEditUser getUserList={getUserList} close={handleCancel} setdetailData={setdetailData} />
-                </Modal>
+                <div className="modal-popup">
+                    <Modal
+                        open={open}
+                        title={setDetailData.id ? 'Cập nhật bộ phận' : 'Thêm mới'}
+                        onCancel={handleCancel}
+                        footer={[]}
+                        width="1200px"
+                    >
+                        <CreateOrEditUser getUserList={getUserList} close={handleCancel} detailData={detailData} />
+                    </Modal>
+                </div>
                 <div className="filter-table">
-                    <FormBoLoc handleSearch={handleSearch} />
+                    <FormBoLoc handleSearch={handleSearch} handleOpenModal={handleOpenModal} form={form} />
                 </div>
                 <div className="table-list">
                     <Table

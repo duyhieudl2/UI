@@ -63,7 +63,7 @@ export default function CreateOrEditEmployee(props) {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             form={form}
-            style={{ maxHeight: '400px', overflowY: 'scroll', margin: 'auto' }}
+            style={{ maxHeight: '700px', margin: 'auto' }}
         >
             <Form.Item name="id" style={{ display: 'none' }}></Form.Item>
 

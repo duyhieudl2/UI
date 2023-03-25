@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Row, Col, Form, Input, Select, Option } from 'antd';
 import * as userServices from '../../api/userServices';
 import * as commonServices from '../../api/commonServices';
 import { Padding } from '@mui/icons-material';
 
-export default function CreateUser() {
+export default function CreateOrEditUser(props) {
+    const [form] = Form.useForm();
+    const { getUserList, close, detailData } = props;
+
+    useEffect(() => {
+        form.resetFields();
+        form.setFieldsValue(detailData);
+    }, [detailData]);
+
     const onFinish = (values) => {
         // console.log("Success:", values);
         // const fetchApi = async () => {
@@ -18,17 +26,6 @@ export default function CreateUser() {
         console.log('Failed:', errorInfo);
     };
 
-    const [dataPosition, setPositionList] = useState([]);
-    const listPosition = () => {
-        console.log('Call position api');
-        const fetchApi = async () => {
-            const result = await commonServices.listPosition();
-            console.log('list position: ' + result);
-            setPositionList(result);
-        };
-        fetchApi();
-    };
-
     return (
         <Form
             name="basic"
@@ -36,14 +33,15 @@ export default function CreateUser() {
                 span: 6,
             }}
             wrapperCol={{
-                span: 18,
+                span: 16,
             }}
             initialValues={{
-                remember: true,
+                ...detailData,
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
+            form={form}
         >
             <Row>
                 <Col span={12}>
@@ -123,7 +121,7 @@ export default function CreateUser() {
                             },
                         ]}
                     >
-                        <Select placeholder="--- Chọn chức vụ ---" onClick={listPosition}>
+                        <Select placeholder="--- Chọn chức vụ ---">
                             <Select.Option value="demo">Demo</Select.Option>
                             <Select.Option value="demo1">Demo1</Select.Option>
                             <Select.Option value="demo2">Demo2</Select.Option>
@@ -139,7 +137,7 @@ export default function CreateUser() {
                 }}
             >
                 <Button type="primary" htmlType="submit">
-                    Submit
+                    Xác nhận
                 </Button>
             </Form.Item>
         </Form>

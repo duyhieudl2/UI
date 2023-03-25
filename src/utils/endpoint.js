@@ -22,7 +22,7 @@ export const Endpoint = {
     LIST_USERS: `${BASE_API_URL}/user`,
 
     // Menu
-    MENU: `${BASE_API_URL}/menu`,
+    CRUD_MENU: `${BASE_API_URL}/menu`,
 
     // Danh mục
     CRUD_DIVISION: `${BASE_API_URL}/division`,

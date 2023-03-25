@@ -42,7 +42,6 @@ export default function Sidebar() {
 
     const naviagete = useNavigate();
 
-    console.log('datasss: ' + JSON.stringify(dataMenu));
     const items = dataMenu.map((array, index) => {
         return getItem(
             <Tooltip placement="right" title={array.name}>

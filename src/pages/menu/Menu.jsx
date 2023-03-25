@@ -1,16 +1,19 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Table, Form, Spin, Modal, Tooltip } from 'antd';
 import { buildQueryString, parseParams, handlePagination, removeUndefinedAttribute } from '~/utils/function';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import CreateOrEditEmployee from './CreateOrEditEmployee';
-import { DEFAULT_PAGESIZE, DEFAULT_PAGEINDEX, STATUSCODE_200 } from '~/utils/constants';
+import CreateOrEditDepartment from './CreateOrEditDepartment';
+import { STATUSCODE_200 } from '~/utils/constants';
 import { authGetData, authDeleteData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
+import moment from 'moment';
+import { FORMAT_DATE } from '~/utils/constants';
 import FormBoLoc from './list-bo-loc';
+import { DEFAULT_PAGESIZE, DEFAULT_PAGEINDEX } from '~/utils/constants';
 
-export default function Employee() {
+export default function Menu() {
     const [open, setOpen] = useState(false);
     const [detailData, setDetailData] = useState({});
 
@@ -25,15 +28,14 @@ export default function Employee() {
     const [filterConditions, setFilterConditions] = useState({
         pageSize: DEFAULT_PAGESIZE,
         pageIndex: DEFAULT_PAGEINDEX,
-        status: 1,
         ...parseParams(location.search),
     });
 
-    // Get List NHÂN VIÊN
-    const getEmployeeList = useCallback(() => {
+    // Get List MENU
+    const getDepartmentList = useCallback(() => {
         const query = buildQueryString(filterConditions);
         authGetData({
-            url: `${Endpoint.CRUD_EMPLOYEE}?${query}`,
+            url: `${Endpoint.CRUD_MENU}?${query}`,
             setLoading,
             onSuccess: (res) => {
                 if (res.statusCode === STATUSCODE_200) {
@@ -53,7 +55,7 @@ export default function Employee() {
         setSearchParams(removeUndefinedAttribute(filterConditions));
     }, [filterConditions]);
     useEffect(() => {
-        getEmployeeList();
+        getDepartmentList();
     }, [filterConditions]);
 
     // Edit
@@ -68,10 +70,10 @@ export default function Employee() {
 
     const handleDelete = useCallback((id) => {
         authDeleteData({
-            url: `${Endpoint.CRUD_EMPLOYEE}/${id}`,
+            url: `${Endpoint.CRUD_MENU}/${id}`,
             setLoading,
             onSuccess: () => {
-                getEmployeeList();
+                getDepartmentList();
             },
         });
     });
@@ -103,33 +105,28 @@ export default function Employee() {
             fixed: 'left',
         },
         {
-            title: 'Tên nhân viên',
+            title: 'Tên',
             width: '20%',
             dataIndex: 'name',
             key: 'id',
             fixed: 'left',
         },
         {
-            title: 'Mã nhân viên',
+            title: 'Mã',
             width: '10%',
             dataIndex: 'code',
-            key: 'id',
-            fixed: 'left',
         },
         {
-            title: 'Phòng ban',
+            title: 'Chức năng',
             width: '20%',
-            dataIndex: 'departmentName',
+            dataIndex: 'moduleId',
         },
         {
-            title: 'Chức vụ',
-            width: '25%',
-            dataIndex: 'positionName',
-        },
-        {
-            title: 'Mã quản lý',
+            title: 'Ngày tạo',
             width: '10%',
-            dataIndex: 'qlCode',
+            dataIndex: 'createdDate',
+            fixed: 'center',
+            render: (createdDate) => <span>{createdDate ? moment(createdDate).format(FORMAT_DATE) : null}</span>,
         },
         {
             title: 'Tác vụ',
@@ -143,28 +140,27 @@ export default function Employee() {
                         </Tooltip>
                     </a>
 
-                    {/* <a className="delete-icons">
+                    <a className="delete-icons">
                         <Tooltip title="Xóa">
                             <DeleteOutlined onClick={() => handleDelete(row.id)} />
                         </Tooltip>
-                    </a> */}
+                    </a>
                 </div>
             ),
         },
     ];
-
     return (
         <div className="table-container">
             <Spin spinning={loading}>
                 <Modal
                     open={open}
-                    title={detailData.id ? 'Cập nhật nhân viên' : 'Thêm mới'}
+                    title={detailData.id ? 'Cập nhật trang' : 'Thêm mới trang'}
                     onCancel={handleCancel}
                     footer={[]}
-                    width="1200px"
+                    width="800px"
                 >
-                    <CreateOrEditEmployee
-                        getEmployeeList={getEmployeeList}
+                    <CreateOrEditDepartment
+                        getDepartmentList={getDepartmentList}
                         close={handleCancel}
                         detailData={detailData}
                     />
@@ -172,6 +168,7 @@ export default function Employee() {
                 <div className="filter-table">
                     <FormBoLoc handleSearch={handleSearch} handleOpenModal={handleOpenModal} form={form} />
                 </div>
+
                 <div className="table-list">
                     <Table
                         columns={columns}
