@@ -78,7 +78,6 @@ export default function Sidebar() {
                 const currentSubItem = dataMenu.find(
                     (item) => item.subItems && item.subItems.find((item) => item.url === location.pathname),
                 );
-                console.log('currenItem: ' + currentSubItem);
                 setSubmenu([currentSubItem.name]);
             } else {
                 setSubmenu([]);

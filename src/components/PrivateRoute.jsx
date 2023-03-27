@@ -16,23 +16,29 @@ import {
 } from '@ant-design/icons';
 import './topbar/topbar.css';
 
-const { Content, Header, Sider } = Layout;
-
 export { PrivateRoute };
 
 function PrivateRoute({ children }) {
+    const { Content, Header, Sider } = Layout;
+    const navigate = useNavigate();
+    const logoutHanlder = () => {
+        localStorage.clear();
+        navigate('/login');
+    };
     const userMenu = (
         <Menu>
             <Menu.Item key="1">Thông tin tài khoản</Menu.Item>
             <Menu.Item key="2">Đổi mật khẩu</Menu.Item>
-            <Menu.Item key="3">Đăng xuất</Menu.Item>
+            <Menu.Item key="3" onClick={logoutHanlder}>
+                Đăng xuất
+            </Menu.Item>
         </Menu>
     );
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-    const navigate = useNavigate();
+
     const currentUser = useSelector((state) => state.currentUser.loggedIn);
     const accessToken = localStorage.getItem('accessToken');
 

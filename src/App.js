@@ -10,6 +10,7 @@ import Section from './pages/danhmuc/section/Section';
 import Position from './pages/danhmuc/chucvu/Position';
 import Employee from './pages/danhmuc/nhanvien/Employee';
 import Supplier from './pages/nhacungcap/supplier/Supplier';
+import Role from './pages/role/Role';
 import AccountSupplier from './pages/nhacungcap/account/AccountSupplier';
 import BaoCaoChamCong from './pages/baocao/BaoCaoChamCong';
 import NormalLoginForm from './pages/login/Login';
@@ -108,6 +109,15 @@ function App() {
                     element={
                         <PrivateRoute>
                             <AccountSupplier />
+                        </PrivateRoute>
+                    }
+                ></Route>
+
+                <Route
+                    path="/nhom-quyen"
+                    element={
+                        <PrivateRoute>
+                            <Role />
                         </PrivateRoute>
                     }
                 ></Route>

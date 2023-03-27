@@ -17,9 +17,11 @@ export const Endpoint = {
     LIST_MANAGER: `${BASE_API_URL}/employee/manager`,
 
     LIST_NGANHHANG: `${BASE_API_URL}/common/list-nganh-hang`,
+    LIST_PERMISSION: `${BASE_API_URL}/permission`,
 
     // User
     LIST_USERS: `${BASE_API_URL}/user`,
+    CRUD_ROLE: `${BASE_API_URL}/role`,
 
     // Menu
     CRUD_MENU: `${BASE_API_URL}/menu`,
