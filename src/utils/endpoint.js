@@ -8,6 +8,7 @@ export const Endpoint = {
     LIST_LOCATION_STORE: `${BASE_API_URL}/common/vi-tri-cua-hang`,
     LIST_MENU_BAOCAO: `${BASE_API_URL}/common/list-menu-baocao`,
     LIST_MENU: `${BASE_API_URL}/common/list-menu`,
+    LIST_MENU_HAS_PERMISSION: `${BASE_API_URL}/common/list-menu-permission`,
     LIST_DEPARTMENT: `${BASE_API_URL}/common/list-department`,
 
     LIST_BOPHAN: `${BASE_API_URL}/common/list-bo-phan`,
@@ -18,10 +19,12 @@ export const Endpoint = {
 
     LIST_NGANHHANG: `${BASE_API_URL}/common/list-nganh-hang`,
     LIST_PERMISSION: `${BASE_API_URL}/permission`,
+    LIST_ROLE: `${BASE_API_URL}/common/list-nhom-quyen`,
 
-    // User
+    // User Role
     LIST_USERS: `${BASE_API_URL}/user`,
     CRUD_ROLE: `${BASE_API_URL}/role`,
+    ADD_USER_ROLE: `${BASE_API_URL}/user/add-user-role`,
 
     // Menu
     CRUD_MENU: `${BASE_API_URL}/menu`,
@@ -44,5 +47,5 @@ export const Endpoint = {
 
     CRUD_ACCOUNT_SUPPLIER: `${BASE_API_URL}/accountsupplier`,
     SELECT_ALL_ACCOUNT_SUPPLIER: `${BASE_API_URL}/accountsupplier/all-account`,
-    ADD_ACCOUNT_SUPPLIER_ROLE: `${BASE_API_URL}/accountsupplier/add-role`,
+    ADD_ACCOUNT_SUPPLIER_ROLE: `${BASE_API_URL}/role/add-role`,
 };

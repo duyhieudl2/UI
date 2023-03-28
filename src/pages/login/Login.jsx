@@ -29,7 +29,8 @@ export default function Login() {
             setLoading,
             onSuccess: (res) => {
                 if (res.statusCode === STATUSCODE_200 && res.data) {
-                    localStorage.setItem('accessToken', res.data);
+                    console.log('accessToken', res.data);
+                    localStorage.setItem('accessToken', res.data.accessToken);
                     dispatch(allActions.userActions.setUser(res.data));
                     navigate('/');
                 } else {

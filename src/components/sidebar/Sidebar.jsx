@@ -24,12 +24,12 @@ export default function Sidebar() {
     const [loading, setLoading] = useState(false);
     let location = useLocation();
     const token = localStorage.getItem('accessToken');
-
+    // const permissions = useSelector((state) => state.currentUser.user.permissions);
     const [dataMenu, setDataMenu] = useState([]);
     const dispatch = useDispatch();
     useEffect(() => {
         authGetData({
-            url: `${Endpoint.LIST_MENU}`,
+            url: `${Endpoint.LIST_MENU_HAS_PERMISSION}`,
             setLoading,
             onSuccess: (res) => {
                 if (res.statusCode === 200) {

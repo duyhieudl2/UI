@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, ApartmentOutlined } from '@ant-design/icons';
 import { Table, Form, Spin, Modal, Tooltip } from 'antd';
 import { buildQueryString, parseParams, handlePagination, removeUndefinedAttribute } from '~/utils/function';
 import { useEffect, useState, useCallback } from 'react';
@@ -9,10 +9,12 @@ import { Endpoint } from '~/utils/endpoint';
 import CreateOrEditUser from './CreateOrEditUser';
 import { DEFAULT_PAGEINDEX, DEFAULT_PAGESIZE, STATUSCODE_200 } from '~/utils/constants';
 import { FormBoLoc } from './list-bo-loc';
+import AddUserRole from './AddUserRole';
 
 export default function UserList() {
     const [form] = Form.useForm();
 
+    const [openAddRole, setOpenAddRole] = useState(false);
     const [open, setOpen] = useState(false);
     const [detailData, setDetailData] = useState({});
 
@@ -67,6 +69,7 @@ export default function UserList() {
 
     const handleCancel = useCallback(() => {
         setOpen(false);
+        setOpenAddRole(false);
     }, []);
 
     // Handler Search
@@ -84,6 +87,16 @@ export default function UserList() {
             pageSize: DEFAULT_PAGESIZE,
         }));
     }, []);
+
+    // Phân quyền
+    const handleAddRole = useCallback(
+        (row) => {
+            if (row !== undefined) setDetailData(row);
+            else setDetailData({});
+            setOpenAddRole(!openAddRole);
+        },
+        [openAddRole],
+    );
 
     const columns = [
         {
@@ -132,7 +145,13 @@ export default function UserList() {
                         </Tooltip>
                     </a>
 
-                    {/* <a className="delete-icons">
+                    <a className="edit-icons">
+                        <Tooltip title="Phân quyền">
+                            <ApartmentOutlined onClick={() => handleAddRole(row)} />
+                        </Tooltip>
+                    </a>
+                    {/* 
+                    <a className="delete-icons">
                         <Tooltip title="Xóa">
                             <DeleteOutlined onClick={() => handleDelete(row.id)} />
                         </Tooltip>
@@ -145,6 +164,16 @@ export default function UserList() {
         <div className="table-container">
             <Spin spinning={loading}>
                 <div className="modal-popup">
+                    <Modal
+                        open={openAddRole}
+                        title="Phân quyền người dùng"
+                        onCancel={handleCancel}
+                        footer={[]}
+                        width="1000px"
+                    >
+                        <AddUserRole getUserList={getUserList} close={handleCancel} detailData={detailData} />
+                    </Modal>
+
                     <Modal
                         open={open}
                         title={setDetailData.id ? 'Cập nhật bộ phận' : 'Thêm mới'}

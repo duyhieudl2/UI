@@ -70,6 +70,17 @@ export default function Supplier() {
         [open],
     );
 
+    // Add user
+    const handleOpenModelAddUser = useCallback(
+        (row) => {
+            if (row !== undefined) setdetailData(row);
+            else setdetailData({});
+            setOpen2(!open2);
+            console.log(detailData);
+        },
+        [open2],
+    );
+
     const handleCancel = useCallback(() => {
         setOpen(false);
         setOpen2(false);
@@ -124,11 +135,11 @@ export default function Supplier() {
                             <EditOutlined onClick={() => handleOpenModal(row)} />
                         </Tooltip>
                     </a>
-                    {/* <a className="add-users-icons">
+                    <a className="add-users-icons">
                         <Tooltip title="Thêm người dùng">
                             <UsergroupAddOutlined onClick={() => handleOpenModelAddUser(row)} />
                         </Tooltip>
-                    </a> */}
+                    </a>
                 </div>
             ),
         },
@@ -246,7 +257,6 @@ export default function Supplier() {
                 <Modal open={open2} title={'Thêm người dùng'} onCancel={handleCancel} footer={[]} width="800px">
                     <AddUser getSupplierList={getSupplierList} close={handleCancel} detailData={detailData} />
                 </Modal>
-
                 <Modal
                     className="centered-modal"
                     open={open}
@@ -254,7 +264,7 @@ export default function Supplier() {
                     onCancel={handleCancel}
                     footer={[]}
                     width="900px"
-                    style={{ top: 'auto' }}
+                    style={{ top: 'auto', paddingTop: 20 }}
                     closable={false}
                 >
                     <CreateSupplier getSupplierList={getSupplierList} close={handleCancel} detailData={detailData} />

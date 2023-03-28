@@ -149,9 +149,12 @@ export default function CreateSupplier(props) {
                     </Form.Item>
                 </Col>
 
-                <Col span={24} sm={24} xl={24} style={{ textAlign: 'center', marginBottom: '10px' }}>
+                <Col span={24} sm={24} xl={24} style={{ textAlign: 'center', marginBottom: '5px', paddingTop: '10px' }}>
                     <Button type="primary" htmlType="submit">
                         Xác nhận
+                    </Button>
+                    <Button type="primary" style={{ marginLeft: 20 }} onClick={close}>
+                        Đóng lại
                     </Button>
                 </Col>
             </Row>

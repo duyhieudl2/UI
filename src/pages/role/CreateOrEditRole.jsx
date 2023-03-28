@@ -30,6 +30,8 @@ export default function CreateOrEditRole(props) {
         getListPermission();
         form.resetFields();
         form.setFieldsValue(detailData);
+        setExpandedKeys(detailData.permissions);
+        setAutoExpandParent(false);
     }, [detailData]);
 
     const onExpand = (expandedKeysValue) => {
@@ -84,6 +86,7 @@ export default function CreateOrEditRole(props) {
             autoComplete="off"
             form={form}
         >
+            <Form.Item name="id" style={{ display: 'none' }}></Form.Item>
             <Form.Item
                 label="Tên quyền"
                 name="name"
