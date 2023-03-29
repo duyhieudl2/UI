@@ -1,9 +1,9 @@
-import { Button, Col, Form, Input, Row, Tooltip, Space, Select, DatePicker } from 'antd';
+import { Button, Col, Form, Input, Row, DatePicker } from 'antd';
 import Selection from '~/components/Select';
 import { Endpoint } from '~/utils/endpoint';
 const { RangePicker } = DatePicker;
 export default function FormBoLoc(props) {
-    const { handleSearch, form, handleExportExcel } = props;
+    const { handleSearch, form } = props;
 
     return (
         <Form

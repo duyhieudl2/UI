@@ -16,11 +16,12 @@ import BaoCaoChamCong from './pages/baocao/BaoCaoChamCong';
 import NormalLoginForm from './pages/login/Login';
 import { PrivateRoute } from '~/components/PrivateRoute';
 import { useSelector } from 'react-redux';
+import routes from '~/routes/routes';
 
 function App() {
     const dataMenu = useSelector((state) => state.module);
 
-    // console.log(Object.keys(dataMenu).length);
+    console.log(JSON.stringify(routes));
     const menuBaoCao =
         Object.keys(dataMenu).length !== 0
             ? dataMenu.moduleList.find((obj) => {
@@ -31,96 +32,19 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route
-                    exac
-                    path="/"
-                    element={
-                        <PrivateRoute>
-                            <Home />
-                        </PrivateRoute>
-                    }
-                ></Route>
-                <Route
-                    path="/users"
-                    element={
-                        <PrivateRoute>
-                            <UserList />
-                        </PrivateRoute>
-                    }
-                ></Route>
-                <Route
-                    path="/bo-phan"
-                    element={
-                        <PrivateRoute>
-                            <Division />
-                        </PrivateRoute>
-                    }
-                ></Route>
-                <Route
-                    path="/phong-ban"
-                    element={
-                        <PrivateRoute>
-                            <Department />
-                        </PrivateRoute>
-                    }
-                ></Route>
-                <Route
-                    path="/chuc-vu"
-                    element={
-                        <PrivateRoute>
-                            <Position />
-                        </PrivateRoute>
-                    }
-                ></Route>
-                <Route
-                    path="/nhan-vien"
-                    element={
-                        <PrivateRoute>
-                            <Employee />
-                        </PrivateRoute>
-                    }
-                ></Route>
-                <Route
-                    path="/ca-lam-viec"
-                    element={
-                        <PrivateRoute>
-                            <Shift />
-                        </PrivateRoute>
-                    }
-                ></Route>
-                <Route
-                    path="/section"
-                    element={
-                        <PrivateRoute>
-                            <Section />
-                        </PrivateRoute>
-                    }
-                ></Route>
-                <Route
-                    path="/nha-cung-cap"
-                    element={
-                        <PrivateRoute>
-                            <Supplier />
-                        </PrivateRoute>
-                    }
-                ></Route>
-                <Route
-                    path="/tai-khoan-nha-cung-cap"
-                    element={
-                        <PrivateRoute>
-                            <AccountSupplier />
-                        </PrivateRoute>
-                    }
-                ></Route>
-
-                <Route
-                    path="/nhom-quyen"
-                    element={
-                        <PrivateRoute>
-                            <Role />
-                        </PrivateRoute>
-                    }
-                ></Route>
+                {routes.map(({ title, path, component: Component, permissionCode }) => {
+                    return (
+                        <Route
+                            exac
+                            path={path}
+                            element={
+                                <PrivateRoute permissionCode={permissionCode} title={title}>
+                                    <Component />
+                                </PrivateRoute>
+                            }
+                        ></Route>
+                    );
+                })}
 
                 {menuBaoCao?.subItems.map((item) => (
                     <Route
@@ -140,7 +64,6 @@ function App() {
                 ))}
 
                 <Route path="/login" element={<NormalLoginForm />} />
-                {/* <Route path="*" element={<Navigate to="/" />} /> */}
             </Routes>
         </Router>
     );

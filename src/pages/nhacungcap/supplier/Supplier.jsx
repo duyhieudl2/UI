@@ -1,18 +1,15 @@
 import React, { Fragment } from 'react';
-import { EditOutlined, DeleteOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import { EditOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import { Table, Form, Spin, Modal, Tooltip } from 'antd';
 import { buildQueryString, parseParams, handlePagination, removeUndefinedAttribute } from '~/utils/function';
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import CreateSupplier from './CreateOrEditSupplier';
 import AddUser from './AddUser';
 import { DEFAULT_PAGEINDEX, DEFAULT_PAGESIZE, STATUSCODE_200 } from '~/utils/constants';
 import { authGetData, authDeleteData, downLoadFile } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
-import moment from 'moment';
-import { FORMAT_DATE } from '~/utils/constants';
 import FormBoLoc from './list-bo-loc';
-import * as reportServices from '~/api/reportServices';
 
 export default function Supplier() {
     const [open2, setOpen2] = useState(false);

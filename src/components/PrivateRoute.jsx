@@ -18,17 +18,21 @@ import './topbar/topbar.css';
 
 export { PrivateRoute };
 
-function PrivateRoute({ children }) {
+function PrivateRoute({ children, permissionCode, title }) {
+    const [open, setOpen] = useState(false);
     const { Content, Header, Sider } = Layout;
     const navigate = useNavigate();
     const logoutHanlder = () => {
         localStorage.clear();
         navigate('/login');
     };
+    const changPassword = () => {};
     const userMenu = (
         <Menu>
-            <Menu.Item key="1">Thông tin tài khoản</Menu.Item>
-            <Menu.Item key="2">Đổi mật khẩu</Menu.Item>
+            {/* <Menu.Item key="1">Thông tin tài khoản</Menu.Item> */}
+            <Menu.Item key="2" onClick={changPassword}>
+                Đổi mật khẩu
+            </Menu.Item>
             <Menu.Item key="3" onClick={logoutHanlder}>
                 Đăng xuất
             </Menu.Item>
@@ -39,15 +43,22 @@ function PrivateRoute({ children }) {
         token: { colorBgContainer },
     } = theme.useToken();
 
-    const currentUser = useSelector((state) => state.currentUser.loggedIn);
+    const currentUser = useSelector((state) => state.currentUser);
     const accessToken = localStorage.getItem('accessToken');
 
-    const [dataMenu, setMenu] = useState([]);
+    // const [dataMenu, setMenu] = useState([]);
 
-    if (accessToken == null || currentUser !== true) {
+    if (accessToken == null || currentUser.loggedIn !== true) {
         return <Navigate to="/login" />;
     }
-
+    if (
+        permissionCode !== '' &&
+        permissionCode !== null &&
+        !currentUser.user.permissions.includes(permissionCode) &&
+        !currentUser.user.isAdministrator
+    ) {
+        return <Navigate to="/" />;
+    }
     return (
         <Layout>
             <Sider
@@ -92,7 +103,7 @@ function PrivateRoute({ children }) {
                     </Tooltip>
 
                     <div className="header-right">
-                        <span className="user-name">Admin</span>
+                        <span className="user-name">{currentUser.user.fullName}</span>
                         <Dropdown overlay={userMenu} trigger={['hover']}>
                             <Avatar icon={<UserOutlined />} className="user-avatar" />
                         </Dropdown>
@@ -113,15 +124,15 @@ function PrivateRoute({ children }) {
                     <div className="nav-breadcrumb">
                         <Breadcrumb>
                             <Breadcrumb.Item>
-                                <a href="/">Home</a>
+                                <a href="#">{title}</a>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item>
+                            {/* <Breadcrumb.Item>
                                 <a href="/application-center">Application Center</a>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
                                 <a href="/application-list">Application List</a>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item>An Application</Breadcrumb.Item>
+                            <Breadcrumb.Item>An Application</Breadcrumb.Item> */}
                         </Breadcrumb>
                     </div>
                     {children}

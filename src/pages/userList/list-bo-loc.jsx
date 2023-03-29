@@ -1,9 +1,6 @@
-import { Button, Col, Form, Input, Row, Tooltip, Select } from 'antd';
-import Selection from '~/components/Select';
-import { Endpoint } from '~/utils/endpoint';
-import React, { useCallback, useEffect } from 'react';
+import { Button, Col, Form, Input, Row, Tooltip } from 'antd';
+import React, { useEffect } from 'react';
 import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
-import { EMPLOYEE_STATUS } from '~/utils/constants';
 
 export function FormBoLoc(props) {
     const { handleSearch, form, handleOpenModal } = props;

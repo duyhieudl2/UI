@@ -25,6 +25,7 @@ export const Endpoint = {
     LIST_USERS: `${BASE_API_URL}/user`,
     CRUD_ROLE: `${BASE_API_URL}/role`,
     ADD_USER_ROLE: `${BASE_API_URL}/user/add-user-role`,
+    USERS_CHANGE_MYPASS: `${BASE_API_URL}/user/chang-my-pass`,
 
     // Menu
     CRUD_MENU: `${BASE_API_URL}/menu`,

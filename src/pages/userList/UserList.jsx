@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditOutlined, DeleteOutlined, ApartmentOutlined } from '@ant-design/icons';
+import { EditOutlined, ApartmentOutlined } from '@ant-design/icons';
 import { Table, Form, Spin, Modal, Tooltip } from 'antd';
 import { buildQueryString, parseParams, handlePagination, removeUndefinedAttribute } from '~/utils/function';
 import { useEffect, useState, useCallback } from 'react';
@@ -79,7 +79,6 @@ export default function UserList() {
     };
 
     const handleSearch = useCallback((values) => {
-        console.log(JSON.stringify(values));
         setFilterConditions((oldState) => ({
             ...oldState,
             ...values,
@@ -116,12 +115,6 @@ export default function UserList() {
             title: 'Email',
             width: 300,
             dataIndex: 'email',
-            fixed: 'left',
-        },
-        {
-            title: 'Ngày sinh',
-            width: 200,
-            dataIndex: 'age',
             fixed: 'left',
         },
         {
@@ -176,7 +169,7 @@ export default function UserList() {
 
                     <Modal
                         open={open}
-                        title={setDetailData.id ? 'Cập nhật bộ phận' : 'Thêm mới'}
+                        title={detailData.id ? 'Cập nhật người dùng' : 'Thêm mới'}
                         onCancel={handleCancel}
                         footer={[]}
                         width="1200px"
