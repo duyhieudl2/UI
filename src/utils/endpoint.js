@@ -29,6 +29,7 @@ export const Endpoint = {
 
     // Menu
     CRUD_MENU: `${BASE_API_URL}/menu`,
+    LIST_PARENT_MENU: `${BASE_API_URL}/common/list-parent-menu`,
 
     // Danh mục
     CRUD_DIVISION: `${BASE_API_URL}/division`,
@@ -48,5 +49,5 @@ export const Endpoint = {
 
     CRUD_ACCOUNT_SUPPLIER: `${BASE_API_URL}/accountsupplier`,
     SELECT_ALL_ACCOUNT_SUPPLIER: `${BASE_API_URL}/accountsupplier/all-account`,
-    ADD_ACCOUNT_SUPPLIER_ROLE: `${BASE_API_URL}/role/add-role`,
+    ADD_ACCOUNT_SUPPLIER_ROLE: `${BASE_API_URL}/accountsupplier/add-role`,
 };

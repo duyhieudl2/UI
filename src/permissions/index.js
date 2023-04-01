@@ -4,6 +4,7 @@ const userPage = {
     qtht1_tao: 'qtht1t',
     qtht1_sua: 'qtht1s',
     qtht1_xoa: 'qtht1x',
+    qtht1_phanquyen: 'qtht1pq',
 };
 
 const menuPage = {
@@ -23,45 +24,45 @@ const rolePage = {
 
 const divisionPage = {
     dm1_division: 'dm1',
-    dm1_view: 'dm1_v',
-    dm1_tao: 'dm1_t',
-    dm1_sua: 'dm1_s',
-    dm1_xoa: 'dm1_x',
+    dm1_view: 'dm1v',
+    dm1_tao: 'dm1t',
+    dm1_sua: 'dm1s',
+    dm1_xoa: 'dm1x',
 };
 const departmentPage = {
     dm2_department: 'dm2',
-    dm2_view: 'dm2_v',
-    dm2_tao: 'dm2_t',
-    dm2_sua: 'dm2_s',
-    dm2_xoa: 'dm2_x',
+    dm2_view: 'dm2v',
+    dm2_tao: 'dm2t',
+    dm2_sua: 'dm2s',
+    dm2_xoa: 'dm2x',
 };
 const employeePage = {
     dm3_employee: 'dm3',
-    dm3_view: 'dm3_v',
-    dm3_tao: 'dm3_t',
-    dm3_sua: 'dm3_s',
-    dm3_xoa: 'dm3_x',
+    dm3_view: 'dm3v',
+    dm3_tao: 'dm3t',
+    dm3_sua: 'dm3s',
+    dm3_xoa: 'dm3x',
 };
 const positionPage = {
     dm4_position: 'dm4',
-    dm4_view: 'dm4_v',
-    dm4_tao: 'dm4_t',
-    dm4_sua: 'dm4_s',
-    dm4_xoa: 'dm4_x',
+    dm4_view: 'dm4v',
+    dm4_tao: 'dm4t',
+    dm4_sua: 'dm4s',
+    dm4_xoa: 'dm4x',
 };
 const shiftPage = {
     dm5_shift: 'dm5',
-    dm5_view: 'dm5_v',
-    dm5_tao: 'dm5_t',
-    dm5_sua: 'dm5_s',
-    dm5_xoa: 'dm5_x',
+    dm5_view: 'dm5v',
+    dm5_tao: 'dm5t',
+    dm5_sua: 'dm5s',
+    dm5_xoa: 'dm5x',
 };
 const sectionPage = {
     dm6_section: 'dm6',
-    dm6_view: 'dm6_v',
-    dm6_tao: 'dm6_t',
-    dm6_sua: 'dm6_s',
-    dm6_xoa: 'dm6_x',
+    dm6_view: 'dm6v',
+    dm6_tao: 'dm6t',
+    dm6_sua: 'dm6s',
+    dm6_xoa: 'dm6x',
 };
 const baoCaoChamCongPage = {
     bccc_inout: 'bcc1',
@@ -75,7 +76,15 @@ const baoCaoChamCongPage = {
 };
 const nhaCungCapPage = {
     ncc_thongtin: 'ncc1',
+    ncc_thongtin_xem: 'ncc1v',
+    ncc_thongtin_sua: 'ncc1s',
+    ncc_thongtin_phanquyen: 'ncc1pq',
+    // tài khoản ncc
     ncc_taikhoan: 'ncc2',
+    ncc_taikhoan_xem: 'ncc2v',
+    ncc_taikhoan_them: 'ncc2t',
+    ncc_taikhoan_sua: 'ncc2s',
+    ncc_taikhoan_xoa: 'ncc2x',
 };
 export const permission = {
     ...userPage,

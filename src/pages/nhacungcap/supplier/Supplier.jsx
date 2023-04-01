@@ -10,6 +10,8 @@ import { DEFAULT_PAGEINDEX, DEFAULT_PAGESIZE, STATUSCODE_200 } from '~/utils/con
 import { authGetData, authDeleteData, downLoadFile } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
 import FormBoLoc from './list-bo-loc';
+import { permission } from '~/permissions/index';
+import CheckPermission from '~/components/CheckPermission';
 
 export default function Supplier() {
     const [open2, setOpen2] = useState(false);
@@ -127,16 +129,20 @@ export default function Supplier() {
             key: 'id',
             render: (row) => (
                 <div>
-                    <a className="edit-icons">
-                        <Tooltip title="Sửa">
-                            <EditOutlined onClick={() => handleOpenModal(row)} />
-                        </Tooltip>
-                    </a>
-                    <a className="add-users-icons">
-                        <Tooltip title="Thêm người dùng">
-                            <UsergroupAddOutlined onClick={() => handleOpenModelAddUser(row)} />
-                        </Tooltip>
-                    </a>
+                    <CheckPermission permissionCode={permission.ncc_thongtin_sua}>
+                        <a className="edit-icons">
+                            <Tooltip title="Sửa">
+                                <EditOutlined onClick={() => handleOpenModal(row)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
+                    <CheckPermission permissionCode={permission.ncc_thongtin_phanquyen}>
+                        <a className="add-users-icons">
+                            <Tooltip title="Thêm người dùng">
+                                <UsergroupAddOutlined onClick={() => handleOpenModelAddUser(row)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
                 </div>
             ),
         },
@@ -275,6 +281,7 @@ export default function Supplier() {
                         scroll={{ x: 2300 }}
                         dataSource={data}
                         rowKey={(record) => record.id}
+                        sticky
                         onChange={onChangePagination}
                         pagination={{
                             total: total ? total : 0,

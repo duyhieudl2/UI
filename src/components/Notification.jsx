@@ -4,7 +4,6 @@ import { Button, notification, Space } from 'antd';
 export default function Notification(props) {
     const [api, contextHolder] = notification.useNotification();
     const openNotificationWithIcon = (props) => {
-        console.log('vao');
         api[props.type]({
             message: props.message,
         });

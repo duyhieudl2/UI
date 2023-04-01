@@ -12,6 +12,8 @@ import moment from 'moment';
 import { FORMAT_DATE } from '~/utils/constants';
 import FormBoLoc from './list-bo-loc';
 import * as reportServices from '~/api/reportServices';
+import { permission } from '~/permissions/index';
+import CheckPermission from '~/components/CheckPermission';
 
 export default function AccountSupplier() {
     const [open, setOpen] = useState(false);
@@ -132,17 +134,20 @@ export default function AccountSupplier() {
             key: 'id',
             render: (row) => (
                 <div>
-                    <a className="edit-icons">
-                        <Tooltip title="Sửa">
-                            <EditOutlined onClick={() => handleOpenModal(row)} />
-                        </Tooltip>
-                    </a>
-
-                    <a className="delete-icons">
-                        <Tooltip title="Xóa">
-                            <DeleteOutlined onClick={() => handleDelete(row.id)} />
-                        </Tooltip>
-                    </a>
+                    <CheckPermission permissionCode={permission.ncc_taikhoan_sua}>
+                        <a className="edit-icons">
+                            <Tooltip title="Sửa">
+                                <EditOutlined onClick={() => handleOpenModal(row)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
+                    <CheckPermission permissionCode={permission.ncc_taikhoan_xoa}>
+                        <a className="delete-icons">
+                            <Tooltip title="Xóa">
+                                <DeleteOutlined onClick={() => handleDelete(row.id)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
                 </div>
             ),
         },

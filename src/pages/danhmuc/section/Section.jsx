@@ -11,7 +11,8 @@ import { Endpoint } from '~/utils/endpoint';
 import moment from 'moment';
 import { FORMAT_DATE } from '~/utils/constants';
 import FormBoLoc from './list-bo-loc';
-
+import { permission } from '~/permissions/index';
+import CheckPermission from '~/components/CheckPermission';
 export default function Section() {
     const [open, setOpen] = useState(false);
     const [detailData, setdetailData] = useState({});
@@ -143,17 +144,20 @@ export default function Section() {
             fixed: 'center',
             render: (row) => (
                 <div>
-                    <a className="edit-icons">
-                        <Tooltip title="Sửa">
-                            <EditOutlined onClick={() => handleOpenModal(row)} />
-                        </Tooltip>
-                    </a>
-
-                    {/* <a className="delete-icons">
-                        <Tooltip title="Xóa">
-                            <DeleteOutlined onClick={() => handleDelete(row.id)} />
-                        </Tooltip>
-                    </a> */}
+                    <CheckPermission permissionCode={permission.dm6_sua}>
+                        <a className="edit-icons">
+                            <Tooltip title="Sửa">
+                                <EditOutlined onClick={() => handleOpenModal(row)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
+                    <CheckPermission permissionCode={permission.dm6_xoa}>
+                        <a className="delete-icons">
+                            <Tooltip title="Xóa">
+                                <DeleteOutlined onClick={() => handleDelete(row.id)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
                 </div>
             ),
         },

@@ -9,7 +9,8 @@ import { DEFAULT_PAGESIZE, DEFAULT_PAGEINDEX, STATUSCODE_200 } from '~/utils/con
 import { authGetData, authDeleteData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
 import FormBoLoc from './list-bo-loc';
-
+import { permission } from '~/permissions/index';
+import CheckPermission from '~/components/CheckPermission';
 export default function Employee() {
     const [open, setOpen] = useState(false);
     const [detailData, setDetailData] = useState({});
@@ -137,17 +138,20 @@ export default function Employee() {
             fixed: 'center',
             render: (row) => (
                 <div>
-                    <a className="edit-icons">
-                        <Tooltip title="Sửa">
-                            <EditOutlined onClick={() => handleOpenModal(row)} />
-                        </Tooltip>
-                    </a>
-
-                    {/* <a className="delete-icons">
-                        <Tooltip title="Xóa">
-                            <DeleteOutlined onClick={() => handleDelete(row.id)} />
-                        </Tooltip>
-                    </a> */}
+                    <CheckPermission permissionCode={permission.dm3_sua}>
+                        <a className="edit-icons">
+                            <Tooltip title="Sửa">
+                                <EditOutlined onClick={() => handleOpenModal(row)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
+                    <CheckPermission permissionCode={permission.dm3_xoa}>
+                        <a className="delete-icons">
+                            <Tooltip title="Xóa">
+                                <DeleteOutlined onClick={() => handleDelete(row.id)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
                 </div>
             ),
         },

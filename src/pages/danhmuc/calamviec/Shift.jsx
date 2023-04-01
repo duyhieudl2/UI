@@ -10,6 +10,8 @@ import { authGetData, authDeleteData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
 import FormBoLoc from './list-bo-loc';
 import { DEFAULT_PAGESIZE, DEFAULT_PAGEINDEX } from '~/utils/constants';
+import { permission } from '~/permissions/index';
+import CheckPermission from '~/components/CheckPermission';
 
 export default function Shift() {
     const [open, setOpen] = useState(false);

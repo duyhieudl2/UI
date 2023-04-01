@@ -4,7 +4,6 @@ import { Table, Form, Spin, Modal, Tooltip } from 'antd';
 import { buildQueryString, parseParams, handlePagination, removeUndefinedAttribute } from '~/utils/function';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import CreateOrEditDepartment from './CreateOrEditDepartment';
 import { STATUSCODE_200 } from '~/utils/constants';
 import { authGetData, authDeleteData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
@@ -152,7 +151,7 @@ export default function Menu() {
     return (
         <div className="table-container">
             <Spin spinning={loading}>
-                <Modal
+                {/* <Modal
                     open={open}
                     title={detailData.id ? 'Cập nhật trang' : 'Thêm mới trang'}
                     onCancel={handleCancel}
@@ -164,7 +163,7 @@ export default function Menu() {
                         close={handleCancel}
                         detailData={detailData}
                     />
-                </Modal>
+                </Modal> */}
                 <div className="filter-table">
                     <FormBoLoc handleSearch={handleSearch} handleOpenModal={handleOpenModal} form={form} />
                 </div>

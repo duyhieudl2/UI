@@ -1,5 +1,6 @@
 import TrangChu from '~/pages/home/Home';
 import UserList from '~/pages/userList/UserList';
+import Menu from '~/pages/menu/Menu';
 import Role from '~/pages/role/Role';
 import Division from '~/pages/danhmuc/bophan/Division';
 import Department from '~/pages/danhmuc/phongban/Department';
@@ -24,6 +25,14 @@ const routes = [
         title: 'Quản lý người dùng',
         path: '/users',
         component: UserList,
+        privateRoute: true,
+        subItems: [],
+        permissionCode: permission.qtht1_user,
+    },
+    {
+        title: 'Quản lý menu',
+        path: '/menu',
+        component: Menu,
         privateRoute: true,
         subItems: [],
         permissionCode: permission.qtht1_user,

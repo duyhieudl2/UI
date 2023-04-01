@@ -12,6 +12,8 @@ import { FORMAT_DATE } from '~/utils/constants';
 import FormBoLoc from './list-bo-loc';
 import { DEFAULT_PAGESIZE, DEFAULT_PAGEINDEX } from '~/utils/constants';
 import CreateOrEditRole from './CreateOrEditRole';
+import { permission } from '~/permissions/index';
+import CheckPermission from '~/components/CheckPermission';
 
 export default function Role() {
     const [open, setOpen] = useState(false);
@@ -125,17 +127,20 @@ export default function Role() {
             fixed: 'center',
             render: (row) => (
                 <div>
-                    <a className="edit-icons">
-                        <Tooltip title="Sửa">
-                            <EditOutlined onClick={() => handleOpenModal(row)} />
-                        </Tooltip>
-                    </a>
-
-                    <a className="delete-icons">
-                        <Tooltip title="Xóa">
-                            <DeleteOutlined onClick={() => handleDelete(row.id)} />
-                        </Tooltip>
-                    </a>
+                    <CheckPermission permissionCode={permission.qtht3_sua}>
+                        <a className="edit-icons">
+                            <Tooltip title="Sửa">
+                                <EditOutlined onClick={() => handleOpenModal(row)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
+                    <CheckPermission permissionCode={permission.qtht3_xoa}>
+                        <a className="delete-icons">
+                            <Tooltip title="Xóa">
+                                <DeleteOutlined onClick={() => handleDelete(row.id)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
                 </div>
             ),
         },

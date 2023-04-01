@@ -18,7 +18,6 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
     }, [link]);
 
     const handleSearch = useCallback(async (values) => {
-        console.log('values : ' + values.month);
         if (values.month === undefined) {
             const sD = moment(new Date(values.FrDate)).format('YYYY-MM-DD');
             const eD = moment(new Date(values.ToDate)).format('YYYY-MM-DD');
@@ -30,14 +29,11 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
             values.ToDate = eD;
             values.spName = spName;
             const resultValues = buildQueryString(parseParams(values));
-            console.log(resultValues);
             const res = await reportServices.downLoadFile(resultValues, setLoading);
 
-            // console.log(res.headers.get('content-disposition').split('filename=')[1].split(';')[0]);
             const fileName = res.headers.get('content-disposition').split('filename=')[1].split(';')[0];
             if (res && res.data && res.status === 200) {
                 const url = window.URL.createObjectURL(new Blob([res.data]));
-                console.log('url' + res);
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', `BC${sD}-${eD}.xlsx`);
@@ -47,14 +43,11 @@ export default function BaoCaoChamCong({ link, params, spName, reportName }) {
         } else {
             values.spName = spName;
             const resultValues = buildQueryString(parseParams(values));
-            console.log(resultValues);
             const res = await reportServices.downLoadFile(resultValues, setLoading);
 
-            console.log(res.headers.get('content-disposition'));
             const fileName = res.headers.get('content-disposition').split('filename=')[1].split(';')[0];
             if (res && res.data && res.status === 200) {
                 const url = window.URL.createObjectURL(new Blob([res.data]));
-                console.log('url' + res);
                 const link = document.createElement('a');
                 link.href = url;
                 const nameFile = fileName.replaceAll('/', '_');

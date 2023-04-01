@@ -10,6 +10,8 @@ import CreateOrEditUser from './CreateOrEditUser';
 import { DEFAULT_PAGEINDEX, DEFAULT_PAGESIZE, STATUSCODE_200 } from '~/utils/constants';
 import { FormBoLoc } from './list-bo-loc';
 import AddUserRole from './AddUserRole';
+import CheckPermission from '~/components/CheckPermission';
+import { permission } from '~/permissions/index';
 
 export default function UserList() {
     const [form] = Form.useForm();
@@ -132,17 +134,21 @@ export default function UserList() {
             width: 100,
             render: (row) => (
                 <div>
-                    <a className="edit-icons">
-                        <Tooltip title="Sửa">
-                            <EditOutlined onClick={() => handleOpenModal(row)} />
-                        </Tooltip>
-                    </a>
+                    <CheckPermission permissionCode={permission.qtht1_sua}>
+                        <a className="edit-icons">
+                            <Tooltip title="Sửa">
+                                <EditOutlined onClick={() => handleOpenModal(row)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
 
-                    <a className="edit-icons">
-                        <Tooltip title="Phân quyền">
-                            <ApartmentOutlined onClick={() => handleAddRole(row)} />
-                        </Tooltip>
-                    </a>
+                    <CheckPermission permissionCode={permission.qtht1_phanquyen}>
+                        <a className="edit-icons">
+                            <Tooltip title="Phân quyền">
+                                <ApartmentOutlined onClick={() => handleAddRole(row)} />
+                            </Tooltip>
+                        </a>
+                    </CheckPermission>
                     {/* 
                     <a className="delete-icons">
                         <Tooltip title="Xóa">

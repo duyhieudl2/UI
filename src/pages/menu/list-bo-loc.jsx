@@ -16,8 +16,8 @@ export default function FormBoLoc(props) {
         >
             <Row gutter={24} justify="space-between" align="middle">
                 <Col span={24} sm={12} xl={8}>
-                    <Form.Item label="Chức năng" name="moduleId">
-                        <Selection url={Endpoint.LIST_BOPHAN} form={form} formKey="moduleId" />
+                    <Form.Item label="Menu cha" name="parentId">
+                        <Selection url={Endpoint.LIST_PARENT_MENU} form={form} formKey="parentId" />
                     </Form.Item>
                 </Col>
 

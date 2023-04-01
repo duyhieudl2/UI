@@ -3,6 +3,7 @@ import { Button, Row, Col, Form, Input } from 'antd';
 import { authPostData } from '~/utils/request';
 import { Endpoint } from '~/utils/endpoint';
 import { getErrorForm } from '~/utils/function';
+import Selection from '~/components/Select';
 
 export default function CreateOrEditUser(props) {
     const [loading, setLoading] = useState(false);
@@ -16,7 +17,7 @@ export default function CreateOrEditUser(props) {
 
     const onFinish = (values) => {
         authPostData({
-            url: `${Endpoint.CRU}`,
+            url: `${Endpoint.LIST_USERS}`,
             method: 'POST',
             setLoading,
             payload: {
@@ -82,21 +83,20 @@ export default function CreateOrEditUser(props) {
                     >
                         <Input />
                     </Form.Item>
+                    <Form.Item name="positionCode" label="Chức vụ">
+                        <Selection
+                            url={Endpoint.LIST_CHUCVU}
+                            formKey="positionCode"
+                            form={form}
+                            placeholder="Chọn chức vụ"
+                        />
+                    </Form.Item>
                 </Col>
                 <Col span={12}>
                     {detailData.id ? (
                         <></>
                     ) : (
-                        <Form.Item
-                            label="Mật khẩu"
-                            name="password"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Mật khẩu không được để trống!',
-                                },
-                            ]}
-                        >
+                        <Form.Item label="Mật khẩu" name="password">
                             <Input.Password />
                         </Form.Item>
                     )}

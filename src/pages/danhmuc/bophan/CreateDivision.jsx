@@ -17,7 +17,6 @@ export default function CreateDivision(props) {
     const [loading, setLoading] = useState(false);
 
     const onFinish = (values) => {
-        console.log(values);
         authPostData({
             url: `${Endpoint.CRUD_DIVISION}`,
             method: 'POST',
