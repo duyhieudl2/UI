@@ -118,35 +118,28 @@ export default function Menu() {
         {
             title: 'Chức năng',
             width: '20%',
-            dataIndex: 'moduleId',
+            dataIndex: 'moduleName',
         },
-        {
-            title: 'Ngày tạo',
-            width: '10%',
-            dataIndex: 'createdDate',
-            fixed: 'center',
-            render: (createdDate) => <span>{createdDate ? moment(createdDate).format(FORMAT_DATE) : null}</span>,
-        },
-        {
-            title: 'Tác vụ',
-            width: 100,
-            fixed: 'center',
-            render: (row) => (
-                <div>
-                    <a className="edit-icons">
-                        <Tooltip title="Sửa">
-                            <EditOutlined onClick={() => handleOpenModal(row)} />
-                        </Tooltip>
-                    </a>
+        // {
+        //     title: 'Tác vụ',
+        //     width: '10%',
+        //     fixed: 'center',
+        //     render: (row) => (
+        //         <div>
+        //             <a className="edit-icons">
+        //                 <Tooltip title="Sửa">
+        //                     <EditOutlined onClick={() => handleOpenModal(row)} />
+        //                 </Tooltip>
+        //             </a>
 
-                    <a className="delete-icons">
-                        <Tooltip title="Xóa">
-                            <DeleteOutlined onClick={() => handleDelete(row.id)} />
-                        </Tooltip>
-                    </a>
-                </div>
-            ),
-        },
+        //             <a className="delete-icons">
+        //                 <Tooltip title="Xóa">
+        //                     <DeleteOutlined onClick={() => handleDelete(row.id)} />
+        //                 </Tooltip>
+        //             </a>
+        //         </div>
+        //     ),
+        // },
     ];
     return (
         <div className="table-container">

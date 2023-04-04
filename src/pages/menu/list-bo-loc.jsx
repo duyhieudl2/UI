@@ -21,13 +21,9 @@ export default function FormBoLoc(props) {
                     </Form.Item>
                 </Col>
 
-                <Col span={24} sm={24} xl={24} style={{ textAlign: 'right', marginBottom: '10px' }}>
+                <Col span={24} sm={24} xl={12} style={{ textAlign: 'right', marginBottom: '10px' }}>
                     <Button type="primary" htmlType="submit" style={{ marginRight: '15px' }} form="filter-form">
                         Tìm kiếm
-                    </Button>
-
-                    <Button type="primary" onClick={() => handleOpenModal()}>
-                        Thêm mới
                     </Button>
                 </Col>
             </Row>
