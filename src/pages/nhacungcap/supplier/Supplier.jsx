@@ -12,6 +12,7 @@ import { Endpoint } from '~/utils/endpoint';
 import FormBoLoc from './list-bo-loc';
 import { permission } from '~/permissions/index';
 import CheckPermission from '~/components/CheckPermission';
+import './supplier.css';
 
 export default function Supplier() {
     const [open2, setOpen2] = useState(false);
@@ -101,24 +102,24 @@ export default function Supplier() {
         }));
     }, []);
 
-    const handleExportExcel = useCallback(async (values) => {
-        const query = buildQueryString(values);
-        const params = `/${Endpoint.EX_EXCEL_SUPPLIER}?${query}`;
-        const res = await downLoadFile(params);
+    // const handleExportExcel = useCallback(async (values) => {
+    //     const query = buildQueryString(values);
+    //     const params = `/${Endpoint.EX_EXCEL_SUPPLIER}?${query}`;
+    //     const res = await downLoadFile(params);
 
-        const fileName = 'NCC.xlsx';
-        if (res && res.data && res.status === 200) {
-            const url = window.URL.createObjectURL(new Blob([res.data]));
-            console.log('url' + res);
-            const link = document.createElement('a');
-            link.href = url;
-            const nameFile = fileName.replaceAll('/', '_');
-            console.log('NAME2: ' + nameFile);
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-        }
-    });
+    //     const fileName = 'NCC.xlsx';
+    //     if (res && res.data && res.status === 200) {
+    //         const url = window.URL.createObjectURL(new Blob([res.data]));
+    //         console.log('url' + res);
+    //         const link = document.createElement('a');
+    //         link.href = url;
+    //         const nameFile = fileName.replaceAll('/', '_');
+    //         console.log('NAME2: ' + nameFile);
+    //         link.setAttribute('download', fileName);
+    //         document.body.appendChild(link);
+    //         link.click();
+    //     }
+    // });
 
     const columns = [
         {
@@ -162,6 +163,12 @@ export default function Supplier() {
             title: 'Email',
             width: '15%',
             dataIndex: 'contactEmail',
+            fixed: 'left',
+        },
+        {
+            title: 'Ghi chú',
+            width: '15%',
+            dataIndex: 'description',
             fixed: 'left',
         },
         {
@@ -263,19 +270,18 @@ export default function Supplier() {
                 <Modal
                     className="centered-modal"
                     open={open}
-                    title={detailData.id ? 'Cập nhật Supplier' : 'Thêm mới'}
                     onCancel={handleCancel}
                     footer={[]}
-                    width="900px"
+                    width="1400px"
                     style={{ top: 'auto', paddingTop: 20 }}
                     closable={false}
                 >
                     <CreateSupplier getSupplierList={getSupplierList} close={handleCancel} detailData={detailData} />
                 </Modal>
                 <div className="filter-table">
-                    <FormBoLoc handleSearch={handleSearch} handleExportExcel={handleExportExcel} form={form} />
+                    <FormBoLoc handleSearch={handleSearch} form={form} />
                 </div>
-                <div className="table-list">
+                <div className="table-list" style={{ top: 150 }}>
                     <Table
                         columns={columns}
                         scroll={{ x: 2300 }}

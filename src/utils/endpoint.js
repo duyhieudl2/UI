@@ -44,10 +44,16 @@ export const Endpoint = {
     GET_MONTH: `${BASE_API_URL}/ReportTimekeeping/thang-cham-cong`,
 
     // Nhà cung cấp
+    GET_LIST_CONTACT: `${BASE_API_URL}/supplier/list-contact`,
     CRUD_SUPPLIER: `${BASE_API_URL}/supplier`,
+    CRUD_SUPPLIER_NCC: `${BASE_API_URL}/supplier/ncc`,
+    GET_LIST_CONTACT_HISTORY: `${BASE_API_URL}/supplier/lich-su-lien-he`,
     EX_EXCEL_SUPPLIER: `supplier/excel`,
 
     CRUD_ACCOUNT_SUPPLIER: `${BASE_API_URL}/accountsupplier`,
     SELECT_ALL_ACCOUNT_SUPPLIER: `${BASE_API_URL}/accountsupplier/all-account`,
     ADD_ACCOUNT_SUPPLIER_ROLE: `${BASE_API_URL}/accountsupplier/add-role`,
+
+    ADD_CONTACT_SUPPLIER: `${BASE_API_URL}/supplier/add-contact`,
+    DELETE_CONTACT: `${BASE_API_URL}/contact`,
 };
